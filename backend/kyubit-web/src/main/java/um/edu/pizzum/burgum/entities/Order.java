@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "orders") // Es buena práctica nombrar la tabla en plural
+@Table(name = "orders")
 public class Order {
 
     @Id
