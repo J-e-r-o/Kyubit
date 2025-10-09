@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 
-public class Creations {
+public class Creation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
