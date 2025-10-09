@@ -28,7 +28,7 @@ public class Address {
 
     private String notes; // Aclaraciones como "apto 101", "reja negra", etc.
 
-    @ManyToOne(fetch = FetchType.LAZY) // Usamos LAZY para no cargar el usuario a menos que se necesite
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }
