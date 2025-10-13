@@ -8,20 +8,23 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    // Inyectamos el proveedor de autenticación que creamos en AppConfig.
     private final AuthenticationProvider authenticationProvider;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
 
-                // --- ¡NUEVA REGLA PARA H2! ---
                 // Desactivamos la protección de cabeceras para los frames,
                 // que es necesaria para que la consola H2 funcione.
                 .headers(headers -> headers
@@ -32,7 +35,6 @@ public class SecurityConfig {
                         // Permitimos el acceso público al registro/login
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        // --- ¡NUEVA REGLA PARA H2! ---
                         // Permitimos el acceso público a la consola H2 y todo lo que hay dentro.
                         .requestMatchers("/h2-console/**").permitAll()
 
@@ -43,6 +45,8 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider);
+
+
 
         return http.build();
     }
