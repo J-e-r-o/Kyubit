@@ -59,6 +59,5 @@ public class AuthService {
 
     public TokenResponse refreshToken(final String authHeader) {
         return null;
-
     }
 }

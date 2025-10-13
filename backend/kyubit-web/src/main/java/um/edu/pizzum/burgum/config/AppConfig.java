@@ -19,19 +19,13 @@ public class AppConfig {
 
     private final UserRepository userRepository;
 
-    /**
-     * Define cómo Spring Security debe encontrar a un usuario.
-     * Le decimos que use nuestro UserRepository para buscar por email.
-     */
+
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return username -> userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("No se ha encontrado al usuario"));
     }
 
-    /**
-     * Define el encriptador de contraseñas que usaremos en toda la aplicación.
-     */
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
