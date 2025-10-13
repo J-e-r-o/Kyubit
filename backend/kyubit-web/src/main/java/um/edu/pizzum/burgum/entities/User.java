@@ -23,7 +23,6 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false)
@@ -40,10 +39,9 @@ public class User implements UserDetails {
 
     private LocalDate birthdate;
 
-    // Atributo clave para diferenciar entre administradores y clientes
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role;
+    private Role role;
 
     @OneToMany
     private List<Address> addresses;
@@ -52,8 +50,14 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Devuelve el rol en el formato que Spring Security necesita
-        return List.of(new SimpleGrantedAuthority(this.role));
+        return List.of(new SimpleGrantedAuthority(this.role.name()));
     }
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Token> tokens;
+
+
+
 
     @Override
     public String getPassword() {
@@ -65,6 +69,8 @@ public class User implements UserDetails {
         // Usamos el email como identificador para el login
         return this.email;
     }
+
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -90,6 +96,9 @@ public class User implements UserDetails {
         ROLE_ADMIN,
         ROLE_CLIENTE
     }
+
+
+
 
 }
 

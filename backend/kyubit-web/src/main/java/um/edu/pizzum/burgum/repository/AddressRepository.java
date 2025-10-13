@@ -5,4 +5,7 @@ import um.edu.pizzum.burgum.entities.Address;
 
 public interface AddressRepository extends JpaRepository<Address,Long> {
 
+
+
+
 }
