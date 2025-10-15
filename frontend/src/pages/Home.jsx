@@ -2,6 +2,7 @@ import {useNavigate} from "react-router-dom";
 
 function Home() {
     const navigate = useNavigate()
+
     const Logearse = () => {
         navigate('/login')
     }
@@ -12,8 +13,8 @@ function Home() {
     return (
         <div>
             <h1> ¿Desea registrarse o iniciar sesion? </h1>
-            <button onClick={() => navigate("./Login")}>
-            </button>
+            <button onClick={Logearse}> Iniciar sesion </button>
+            <button onClick={Registrarse}> Registrarse </button>
         </div>
     )
 }
