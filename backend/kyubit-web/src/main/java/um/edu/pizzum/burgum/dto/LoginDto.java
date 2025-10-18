@@ -1,11 +1,11 @@
 package um.edu.pizzum.burgum.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginDto {
 
     private String email;

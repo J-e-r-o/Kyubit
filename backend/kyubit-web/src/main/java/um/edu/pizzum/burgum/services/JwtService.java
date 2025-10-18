@@ -1,51 +1,79 @@
 package um.edu.pizzum.burgum.services;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import um.edu.pizzum.burgum.entities.User;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 @Service
 public class JwtService {
 
-    @Value("${application.security.jwt.secret-key}")
-    private String secretKey;
-    @Value("${application.security.jwt.expiration}")
-    private long jwtExpiration;
-    @Value("${application.security.jwt.refresh-token.expiration}")
-    private long refreshExpiration;
+    private final SecretKey secretKey;
+    private final long jwtExpiration = 1000 * 60 * 24; // 24 horas
 
-
-    public String generateToken(User user) {
-        return buildToken(Map.of(), user, jwtExpiration);
+    // Usamos inyección por constructor para la clave, es más limpio
+    public JwtService(@Value("${application.security.jwt.secret-key}") String secretKeyValue) {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKeyValue);
+        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateRefreshToken(User user) {
-        return buildToken(Map.of(), user, refreshExpiration);
+    // --- MÉTODOS PARA CREAR TOKENS ---
+
+    public String getToken(UserDetails user) {
+        return getToken(new HashMap<>(), user);
     }
 
-    private String buildToken(Map<String, Object> extraClaims, User user, long expiration) {
+    private String getToken(Map<String, Object> extraClaims, UserDetails user) {
+        // --- SINTAXIS MODERNA PARA CONSTRUIR ---
         return Jwts.builder()
-                .id(user.getId().toString())
-                .claims(Map.of("name",user.getName()))
-                .subject(user.getEmail())
+                .claims(extraClaims)
+                .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+expiration))
-                .signWith(getSignInKey())
+                .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .signWith(secretKey, Jwts.SIG.HS256)
                 .compact();
     }
 
-    private SecretKey getSignInKey(){
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes); //esto es un algoritmo que me genera la key
+    // --- MÉTODOS PARA LEER Y VALIDAR TOKENS ---
+
+    public String getUsernameFromToken(String token) {
+        return getClaim(token, Claims::getSubject);
     }
 
+    public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims getAllClaims(String token) {
+        // --- SINTAXIS MODERNA PARA PARSEAR ---
+        return Jwts.parser() // El método moderno es 'parser'
+                .verifyWith(secretKey) // Se usa 'verifyWith' para establecer la clave
+                .build()
+                .parseSignedClaims(token) // Se usa 'parseSignedClaims'
+                .getPayload(); // Se usa 'getPayload' en lugar de 'getBody'
+    }
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = getUsernameFromToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    private boolean isTokenExpired(String token) {
+        return getExpirationDate(token).before(new Date());
+    }
+
+    private Date getExpirationDate(String token) {
+        return getClaim(token, Claims::getExpiration);
+    }
 }
 

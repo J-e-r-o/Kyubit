@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @Configuration
@@ -16,39 +19,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    // Inyectamos el proveedor de autenticación que creamos en AppConfig.
-    private final AuthenticationProvider authenticationProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthenticationProvider authProvider;
 
-
-    @Bean
+   @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
 
-                // Desactivamos la protección de cabeceras para los frames,
-                // que es necesaria para que la consola H2 funcione.
-                .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.disable())
+       return http.
+                csrf(crsf -> //lo que hago aca es deshabilitar un token csrf que tambien es utlizado. Lo hago porque vamos a usar el jwt
+                        crsf.disable())
+                .authorizeHttpRequests(authRequest ->
+                   authRequest
+                           .requestMatchers("/api/auth/**").permitAll()
+                           .anyRequest().authenticated()
                 )
-
-                .authorizeHttpRequests(auth -> auth
-                        // Permitimos el acceso público al registro/login
-                        .requestMatchers("/api/auth/**").permitAll()
-
-                        // Permitimos el acceso público a la consola H2 y todo lo que hay dentro.
-                        .requestMatchers("/h2-console/**").permitAll()
-
-                        // Para cualquier otra petición, requerimos autenticación
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authenticationProvider(authenticationProvider);
-
-
-
-        return http.build();
-    }
+               .sessionManagement(sessionManager ->
+                       sessionManager
+                               .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ACA ES DONDE YO PONGO QUE SEA LA VERIFICACION CON JWT
+               .authenticationProvider(authProvider)
+               .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+               .build();
+   }
 }
 

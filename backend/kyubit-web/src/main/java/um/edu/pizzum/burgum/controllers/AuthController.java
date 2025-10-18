@@ -20,23 +20,23 @@ public class AuthController { //esta clase es para chequear el inicio de sesion
     private final AuthService authService;
 
 
-    @PostMapping("/register")
-    public ResponseEntity<TokenResponse> register(@RequestBody final RegisterRequestDTO request){
-        final TokenResponse tokenResponse = authService.register(request);
-        return ResponseEntity.ok(tokenResponse);
+    @PostMapping(value = "register")
+    public ResponseEntity<AuthResponse> register(@RequestBody final RegisterRequestDTO request){
+
+        return ResponseEntity.ok(authService.register(request));
     }
 
-    @PostMapping("/register/admin")
-    public ResponseEntity<TokenResponse> registerAdmin(@RequestBody final RegisterRequestDTO request){
-        final TokenResponse tokenResponse = authService.registerAdmin(request);
-        return ResponseEntity.ok(tokenResponse);
-    }
+//    @PostMapping("/register/admin")
+//    public ResponseEntity<TokenResponse> registerAdmin(@RequestBody final RegisterRequestDTO request){
+//        final TokenResponse tokenResponse = authService.registerAdmin(request);
+//        return ResponseEntity.ok(tokenResponse);
+//    }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> loginClient(@RequestBody final LoginDto logindata){
+    public ResponseEntity<AuthResponse> loginClient(@RequestBody LoginDto request){  //uso responseEntity poruqe me represetna toda la respuesta http
 
-        final TokenResponse tokenResponse = authService.login(logindata);
-        return ResponseEntity.ok(tokenResponse);
+      return  ResponseEntity.ok(authService.login(request));
+
     }
 
 
