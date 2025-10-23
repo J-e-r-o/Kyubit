@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+// 1. Importa los componentes de enrutamiento
+import { Routes, Route } from 'react-router-dom';
 
+// 2. Importa tu página de Login (asegúrate de que exista en esa ruta)
+import LoginPage from './pages/LoginPage';
+
+/**
+ * Componente raíz súper básico.
+ * Solo define la ruta para mostrar la página de login.
+ */
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    // 3. Contenedor de rutas
+    <Routes>
+
+      {/* Cuando la URL sea /login, muestra el componente LoginPage */}
+      <Route path="/login" element={<LoginPage />} />
+
+      {/* Ruta para la raíz (puedes poner un mensaje simple o redirigir) */}
+      <Route path="/" element={
+          <div>
+              <h1>Página Principal</h1>
+              <p>Ve a <a href="/login">/login</a> para ver el saludo.</p>
+          </div>
+      } />
+
+      {/* Ruta para cualquier otra URL no encontrada */}
+      <Route path="*" element={<h1>404 - Página No Encontrada</h1>} />
+
+    </Routes>
+  );
 }
 
-export default App
+export default App;
+
