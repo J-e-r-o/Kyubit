@@ -1,15 +1,15 @@
 package um.edu.pizzum.burgum.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -27,12 +27,20 @@ public class Creation {
     @Column(nullable = false)
     private String name; // El nombre que el cliente le da a su creación
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "creation_ingredients", // Nombre de la tabla intermedia
-            joinColumns = @JoinColumn(name = "creation_id"), // Columna que apunta a esta entidad (Creation)
-            inverseJoinColumns = @JoinColumn(name = "product_id") // Columna que apunta a la otra entidad (Products)
-    )
-    private List<Products> ingredients; // La lista ahora sabe que contiene objetos de tipo 'Products'
+    @Column
+    private String productType; //Esto es si es hamburgues o pizza o otra cosa en el futuro
 
+
+    //N:N para Ingredients
+    @ManyToMany
+    @JoinTable(
+            name = "creation_ingredient", // Nombre de la tabla de unión (intermedia)
+            joinColumns = @JoinColumn(name = "creation_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private Set<Ingredient> ingredients = new HashSet<>();
+
+    // opcional: lista de OrderItem que incluyen esta creation (no requerida), no se yo la dejo igual
+    @OneToMany(mappedBy = "creation")
+    private List<OrderItem> orderItems = new ArrayList<>();
 }

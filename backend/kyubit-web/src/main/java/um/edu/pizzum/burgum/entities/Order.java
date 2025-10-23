@@ -1,48 +1,39 @@
 package um.edu.pizzum.burgum.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
-@Data
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
+@Table(name = "orders")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "orders")
+@Builder
+@Setter
 public class Order {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id") // Así se define la clave foránea
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id")
+    private User client;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "payment_method_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
-    @Column(nullable = false)
-    private LocalDate orderDate;
+    private LocalDateTime createdAt;
+    private String status;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private OrderStatus status;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal total; //
-
-
-    public enum OrderStatus {
-        EN_COLA,
-        EN_PREPARACION,
-        EN_CAMINO,
-        ENTREGADO,
-        CANCELADO
-    }
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items = new ArrayList<>();
 }
+
+
