@@ -1,70 +1,55 @@
 package um.edu.pizzum.burgum.mapper;
 
 import um.edu.pizzum.burgum.dto.IngredientDto;
-import um.edu.pizzum.burgum.entities.Creation; // Necesario para el stream
 import um.edu.pizzum.burgum.entities.Ingredient;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class IngredientMapper {
 
     /**
-     * Debido a 'mappedBy = "ingredients"', JPA no permite actualizar
-     * la relación desde la entidad Ingredient. Debe hacerse desde Creation.
+     * Mapea DTO -> Entidad.
+     * Como Ingredient no es el lado propietario de la relación ManyToMany,
+     * se deja el Set<Creation> vacío. La gestión se hace desde Creation.
      */
-    public static Ingredient mapToIngredient(IngredientDto ingredientDto) {
-        if (ingredientDto == null) {
-            return null;
-        }
+    public static Ingredient mapToIngredient(IngredientDto dto) {
+        if (dto == null) return null;
 
-        return new Ingredient(
-                ingredientDto.getId(),
-                ingredientDto.getName(),
-                ingredientDto.getCost(),
-                ingredientDto.getStock(),
-                // Se pasa un Set vacío porque Ingredient NO es dueño de la relación.
-                new HashSet<>()
-        );
+        return Ingredient.builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                .cost(dto.getCost())
+                .stock(dto.getStock())
+                .creations(new HashSet<>())
+                .build();
     }
 
     /**
-     * Convierte la Entidad (Ingredient) al DTO (IngredientDto).
-     * Extrae los IDs del Set<Creation> relacionado.
+     * Mapea Entidad -> DTO.
      */
     public static IngredientDto mapToIngredientDto(Ingredient ingredient) {
-        if (ingredient == null) {
-            return null;
-        }
+        if (ingredient == null) return null;
 
-        // 1. Extraer los IDs de las creaciones (con chequeo de nulidad)
-        Set<Long> creationIds = (ingredient.getCreations() != null)
-                ? ingredient.getCreations().stream()
-                .map(Creation::getId)
-                .collect(Collectors.toSet())
-                : new HashSet<>();
-
-        // 2. Usar el constructor del DTO
-        return new IngredientDto(
-                ingredient.getId(),
-                ingredient.getName(),
-                ingredient.getCost(),
-                ingredient.getStock(),
-                creationIds // Asignamos solo los IDs
-        );
+        return IngredientDto.builder()
+                .id(ingredient.getId())
+                .name(ingredient.getName())
+                .cost(ingredient.getCost())
+                .stock(ingredient.getStock())
+                .build();
     }
 
-    // --- Métodos de utilidad para Listas ---
-
     public static List<IngredientDto> mapToDtoList(List<Ingredient> entities) {
+        if (entities == null) return Collections.emptyList();
         return entities.stream()
                 .map(IngredientMapper::mapToIngredientDto)
                 .collect(Collectors.toList());
     }
 
     public static List<Ingredient> mapToEntityList(List<IngredientDto> dtos) {
+        if (dtos == null) return Collections.emptyList();
         return dtos.stream()
                 .map(IngredientMapper::mapToIngredient)
                 .collect(Collectors.toList());

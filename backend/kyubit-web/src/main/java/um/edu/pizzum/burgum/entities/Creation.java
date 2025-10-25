@@ -2,22 +2,24 @@ package um.edu.pizzum.burgum.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "creations")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Creation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,19 +30,21 @@ public class Creation {
     private String name;
 
     @Column
-    private String productType; //Esto es si es hamburgues o pizza o otra cosa en el futuro
+    private String productType; // ej. "hamburger", "pizza", etc.
 
 
-    //N:N para Ingredients
-    @ManyToMany
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "creation_ingredient", // Nombre de la tabla de unión (intermedia)
+            name = "creation_ingredient",
             joinColumns = @JoinColumn(name = "creation_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private Set<Ingredient> ingredients = new HashSet<>();
 
-    // opcional: lista de OrderItem que incluyen esta creation (no requerida), no se yo la dejo igual
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "creation")
     private List<OrderItem> orderItems = new ArrayList<>();
 }

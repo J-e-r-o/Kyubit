@@ -17,5 +17,4 @@ public class IngredientDto {
     private Integer cost;
     private Integer stock;
 
-    private Set<Long> creationIds;
 }
