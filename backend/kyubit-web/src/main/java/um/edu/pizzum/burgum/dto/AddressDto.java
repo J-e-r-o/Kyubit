@@ -1,17 +1,13 @@
 package um.edu.pizzum.burgum.dto;
-
-
-import um.edu.pizzum.burgum.entities.User;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class AddressDto {
 
     private Long id;
@@ -21,7 +17,7 @@ public class AddressDto {
     private String zipCode;
     private String notes;
 
-    //Estas cosas de los atributos que resultan de las @ManyToOne y esas cosas van tambien en los dto???
-    private User user;
+    // ¡CORRECCIÓN! Solo el ID del usuario, no la entidad completa.
+    private Long userId;
 
 }

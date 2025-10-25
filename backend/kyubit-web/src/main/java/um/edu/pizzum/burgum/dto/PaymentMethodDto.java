@@ -1,16 +1,13 @@
 package um.edu.pizzum.burgum.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import um.edu.pizzum.burgum.entities.User;
 
 
-@Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class PaymentMethodDto {
 
     private Long id;
@@ -20,5 +17,5 @@ public class PaymentMethodDto {
     private String expirationDate;
     private String token;
     private User user;
-
+    private Long userId;
 }

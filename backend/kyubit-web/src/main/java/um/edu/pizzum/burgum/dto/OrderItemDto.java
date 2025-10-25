@@ -1,25 +1,24 @@
 package um.edu.pizzum.burgum.dto;
-
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import um.edu.pizzum.burgum.entities.Creation;
-import um.edu.pizzum.burgum.entities.Order;
 
 import java.math.BigDecimal;
 
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItemDto {
+@Builder
+public class OrderItemDto { // Usando DTO en mayúsculas para consistencia
 
     private Long id;
-    private Order order;
-    private Creation creation;
+
+
+    private Long orderId;
+    private Long creationId;
+
     private Integer quantity;
     private BigDecimal unitPrice;
-
 }

@@ -8,8 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -22,10 +22,10 @@ public class Creation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // La creación pertenece a un usuario
+    private User user;
 
     @Column(nullable = false)
-    private String name; // El nombre que el cliente le da a su creación
+    private String name;
 
     @Column
     private String productType; //Esto es si es hamburgues o pizza o otra cosa en el futuro
