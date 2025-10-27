@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 
 // 2. Importa tu página de Login (asegúrate de que exista en esa ruta)
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 /**
  * Componente raíz súper básico.
@@ -27,7 +28,7 @@ function App() {
 
       {/* Ruta para cualquier otra URL no encontrada */}
       <Route path="*" element={<h1>404 - Página No Encontrada</h1>} />
-
+      <Route path ="/register" element={<RegisterPage/>}/>
     </Routes>
   );
 }
