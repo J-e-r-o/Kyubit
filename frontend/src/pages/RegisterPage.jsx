@@ -1,5 +1,5 @@
 import React from 'react';
-import COVER_IMAGE from '../assets/prueba7.png'; // Asegúrate de que la ruta sea correcta
+import COVER_IMAGE from '../assets/prueba7.png';
 import { Link } from 'react-router-dom';
 
 const RegisterPage = () => {

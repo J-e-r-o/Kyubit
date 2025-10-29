@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage';
 
 import PestañaCreacion from './pages/PestañaCreacion';
 import Perfil from './pages/Perfil';
+import Carrito from './pages/Carrito';
 
 /**
  * Componente raíz súper básico.
@@ -32,6 +33,8 @@ function App() {
       
       {/* Ruta para la pestaña de creación*/}
       <Route path="/create" element={<PestañaCreacion />} />
+      
+      <Route path="/carrito" element={<Carrito />} />
 
       {/*Ruta para la pestaña de Perfil*/}
       <Route path="/perfil" element={<Perfil />} />
