@@ -6,6 +6,9 @@ import { Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 
+import PestañaCreacion from './pages/PestañaCreacion';
+import Perfil from './pages/Perfil';
+
 /**
  * Componente raíz súper básico.
  * Solo define la ruta para mostrar la página de login.
@@ -17,6 +20,7 @@ function App() {
 
       {/* Cuando la URL sea /login, muestra el componente LoginPage */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path ="/register" element={<RegisterPage/>}/>
 
       {/* Ruta para la raíz (puedes poner un mensaje simple o redirigir) */}
       <Route path="/" element={
@@ -25,10 +29,15 @@ function App() {
               <p>Ve a <a href="/login">/login</a> para ver el saludo.</p>
           </div>
       } />
+      
+      {/* Ruta para la pestaña de creación*/}
+      <Route path="/create" element={<PestañaCreacion />} />
 
+      {/*Ruta para la pestaña de Perfil*/}
+      <Route path="/perfil" element={<Perfil />} />
+      
       {/* Ruta para cualquier otra URL no encontrada */}
       <Route path="*" element={<h1>404 - Página No Encontrada</h1>} />
-      <Route path ="/register" element={<RegisterPage/>}/>
     </Routes>
   );
 }
