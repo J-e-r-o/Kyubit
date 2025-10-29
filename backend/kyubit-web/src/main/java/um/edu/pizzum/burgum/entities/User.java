@@ -10,8 +10,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+
 
 @Data
 @Builder
@@ -43,8 +43,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
-    @OneToMany
-    private List<Address> addresses;
 
 
     @Override
@@ -56,6 +54,28 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Token> tokens;
 
+    //Desde aca empeze a agregar---------------------------------------------------------------------------
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_creations",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "creation_id")
+    )
+    private Set<Creation> favoriteCreations = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // <--- ¡CORRECCIÓN!
+    private List<Address> addresses = new ArrayList<>();
+
+
+    // Relación OneToMany: Un usuario (Admin) puede subir muchas Creations
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Creation> createdProducts = new ArrayList<>(); // ¡NUEVO CAMPO!
+
+
+
+    //Hasta aca---------------------------------------------------------------------------------------------------
 
 
 

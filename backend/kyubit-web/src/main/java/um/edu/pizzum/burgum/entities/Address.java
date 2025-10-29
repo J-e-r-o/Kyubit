@@ -21,6 +21,10 @@ public class Address {
     @Column(nullable = false)
     private String street;
 
+    //Agregue este atributo
+    @Column(nullable = false)
+    private Integer number;
+
     @Column(nullable = false)
     private String city;
 
