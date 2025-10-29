@@ -3,6 +3,7 @@ package um.edu.pizzum.burgum.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 public class PaymentMethod{
 
     @Id
@@ -29,6 +30,9 @@ public class PaymentMethod{
 
     @Column(nullable = false)
     private String expirationDate;
+
+    @Column(nullable = false)
+    private String token; // Me recomendaron este campo para manejar los token de pagos, lo dejo y sino despues lo borramos
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
