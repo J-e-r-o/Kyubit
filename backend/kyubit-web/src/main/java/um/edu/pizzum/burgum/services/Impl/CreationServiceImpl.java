@@ -29,10 +29,10 @@ public class CreationServiceImpl implements CreationService {
     @Override
     @Transactional
     public CreationDto create(CreationDto dto) {
-        // map DTO -> entity (placeholders)
+        // map DTO -> entidad (placeholders)
         Creation creation = CreationMapper.mapToCreation(dto);
 
-        // resolve user
+        // 1) resolver user
         if (dto.getUserId() == null) {
             throw new CreationNotFoundException("User id is required for creation");
         }
@@ -40,12 +40,19 @@ public class CreationServiceImpl implements CreationService {
                 .orElseThrow(() -> new CreationNotFoundException("User", "id", dto.getUserId()));
         creation.setUser(user);
 
-        // resolve ingredients (if any)
+
+        // 2) resolver ingredientes desde DB
         Set<Ingredient> resolvedIngredients = resolveIngredients(dto.getIngredientIds());
         creation.setIngredients(resolvedIngredients);
 
+
+        // 3) guardar
         Creation saved = creationRepository.save(creation);
-        return CreationMapper.mapToCreationDto(saved);
+        // 4) volver a leer la entidad con ingredients inicializados
+        Creation withIngredients = creationRepository.findByIdWithIngredients(saved.getId())
+                .orElse(saved);
+
+        return CreationMapper.mapToCreationDto(withIngredients);
     }
 
     @Override
@@ -81,18 +88,19 @@ public class CreationServiceImpl implements CreationService {
         Creation existing = creationRepository.findById(id)
                 .orElseThrow(() -> new CreationNotFoundException("Creation", "id", id));
 
-        // actualizar campos simples
+        // campos simples
         if (dto.getName() != null) existing.setName(dto.getName());
         if (dto.getProductType() != null) existing.setProductType(dto.getProductType());
 
-        // si vienen userId -> resolver y setear
+        // user
         if (dto.getUserId() != null) {
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new CreationNotFoundException("User", "id", dto.getUserId()));
             existing.setUser(user);
         }
 
-        // si vienen ingredientIds -> resolver y setear (reemplaza la colección)
+
+        // ingredients -> reemplazar
         if (dto.getIngredientIds() != null) {
             Set<Ingredient> resolvedIngredients = resolveIngredients(dto.getIngredientIds());
             existing.getIngredients().clear();
@@ -100,7 +108,8 @@ public class CreationServiceImpl implements CreationService {
         }
 
         Creation saved = creationRepository.save(existing);
-        return CreationMapper.mapToCreationDto(saved);
+        Creation withIngredients = creationRepository.findByIdWithIngredients(saved.getId()).orElse(saved);
+        return CreationMapper.mapToCreationDto(withIngredients);
     }
 
     @Override
@@ -118,21 +127,14 @@ public class CreationServiceImpl implements CreationService {
     private Set<Ingredient> resolveIngredients(Set<Long> ingredientIds) {
         if (ingredientIds == null || ingredientIds.isEmpty()) return Collections.emptySet();
 
+
         Iterable<Ingredient> found = ingredientRepository.findAllById(ingredientIds);
         Set<Ingredient> foundSet = StreamSupport.stream(found.spliterator(), false)
                 .collect(Collectors.toSet());
 
-        // comprobar si falta alguno
-        Set<Long> foundIds = foundSet.stream()
-                .map(Ingredient::getId)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
 
-        Set<Long> missing = ingredientIds.stream()
-                .filter(Objects::nonNull)
-                .filter(id -> !foundIds.contains(id))
-                .collect(Collectors.toSet());
-
+        Set<Long> foundIds = foundSet.stream().map(Ingredient::getId).collect(Collectors.toSet());
+        Set<Long> missing = ingredientIds.stream().filter(id -> !foundIds.contains(id)).collect(Collectors.toSet());
         if (!missing.isEmpty()) {
             throw new CreationNotFoundException("Ingredients not found with ids: " + missing);
         }
