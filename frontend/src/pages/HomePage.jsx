@@ -3,7 +3,6 @@ import React from 'react';
 import HomePageNav from '../components/HomePageNav';
 import ActionCard from '../components/ActionCard';
 
-// Importa las imágenes (las usaremos luego)
 import MisCreacionesImg from '../assets/burga.png';
 import CrearImg from '../assets/prueba5.png';
 import MenuImg from '../assets/prueba7.png';

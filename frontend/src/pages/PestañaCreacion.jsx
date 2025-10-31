@@ -9,35 +9,9 @@ const PestañaCreacion = () => {
 
     return(
         <div className="min-h-screen bg-neutral-900">
-      {/* Barra superior */}
-      <nav className="flex items-center justify-between px-8 py-3 bg-gray-100 shadow-sm relative z-20">
-        <div className="flex items-center space-x-2">
-          <div className="w-0.5 h-7 bg-orange-500 rounded-full"></div>
-          <h1 className="text 3xl font-semibold text-gray-800 text-xl ">Panel de creación</h1>
-        </div>
+      {/* Barra superior ACA CAMBIE LA DE TRIVE, ES LO MISMO PERO CON UNOS LOGUITOS MAS */}
+      <HomePageNav />
 
-        <div className="flex items-center space-x-6 text-sm font-medium text-gray-600">
-          <Link to="/" className="hover:text-orange-500 transition-colors">
-            Pestaña0
-          </Link>
-          <Link to="/" className="hover:text-orange-500 transition-colors">
-            Pestaña1
-          </Link>
-          <Link to="/" className="hover:text-orange-500 transition-colors">
-            Pestaña2
-          </Link>
-          <Link to="/carrito" className="hover:text-orange-500 transition-colors">
-            Carrito
-          </Link>
-          <Link to="/perfil" className="ml-4">
-            <img
-              src={FotoPerfil}
-              alt="Perfil"
-              className="w-10 h-10 rounded-full object-cover hover:ring-2 hover:ring-orange-400 transition"
-            />
-          </Link>
-        </div>
-      </nav>
 
       {/* Contenido principal dividido en dos mitades */}
       <main className="grid grid-cols-2 min-h-[calc(100vh-64px)] relative overflow-hidden m-0 p-0">
