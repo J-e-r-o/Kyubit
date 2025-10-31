@@ -1,6 +1,5 @@
 package um.edu.pizzum.burgum.controllers;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-
 public class AuthResponse {
-
-    String token;
+    private String token;
+    private String email;
+    private String role;
 }
+
+
+

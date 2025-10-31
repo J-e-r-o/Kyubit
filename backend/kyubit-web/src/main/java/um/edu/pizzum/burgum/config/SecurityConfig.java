@@ -1,18 +1,20 @@
 package um.edu.pizzum.burgum.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import static org.springframework.security.config.Customizer.withDefaults;
-
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -20,25 +22,43 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final AuthenticationProvider authProvider;
+    private final UserDetailsService userDetailsService; // inyecta tu UserDetailsServiceImpl si existe
 
-   @Bean
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-       return http.
-                csrf(crsf -> //lo que hago aca es deshabilitar un token csrf que tambien es utlizado. Lo hago porque vamos a usar el jwt
-                        crsf.disable())
+        return http
+                .csrf(crsf -> crsf.disable())
                 .authorizeHttpRequests(authRequest ->
-                   authRequest
-                           .requestMatchers("/api/auth/**").permitAll()
-                           .anyRequest().authenticated()
+                        authRequest
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
                 )
-               .sessionManagement(sessionManager ->
-                       sessionManager
-                               .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ACA ES DONDE YO PONGO QUE SEA LA VERIFICACION CON JWT
-               .authenticationProvider(authProvider)
-               .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-               .build();
-   }
-}
+                .sessionManagement(sessionManager ->
+                        sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(daoAuthenticationProvider()) // usa el provider con bcrypt
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
 
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+
+    //BORRAR
+    @Bean
+    @ConditionalOnMissingBean(PasswordEncoder.class)
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); }
+
+    // Necesario para AuthenticationManager (used in AuthService)
+    @Bean
+    @ConditionalOnMissingBean(PasswordEncoder.class)
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+}
