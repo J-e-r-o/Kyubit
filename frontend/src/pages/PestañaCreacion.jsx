@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import FotoPerfil from '../assets/FotoPerfil.webp';
 import FotoPizza from '../assets/prueba7.png';
 import FotoBurguer from '../assets/prueba5.png'
+import HomePageNav from '../components/HomePageNav';
 
 const PestañaCreacion = () => {
 

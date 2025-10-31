@@ -1,49 +1,48 @@
+// src/App.jsx
 import React from 'react';
-// 1. Importa los componentes de enrutamiento
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
-// 2. Importa tu página de Login (asegúrate de que exista en esa ruta)
+// Importa tus páginas
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-
+import HomePage from './pages/HomePage';
 import PestañaCreacion from './pages/PestañaCreacion';
 import Perfil from './pages/Perfil';
 import Carrito from './pages/Carrito';
 
-/**
- * Componente raíz súper básico.
- * Solo define la ruta para mostrar la página de login.
- */
+// Páginas placeholder para que los links no den 404
+const MenuPage = () => <h1>Página de Menú (Próximamente)</h1>;
+const MisCreacionesPage = () => <h1>Página de Mis Creaciones (Próximamente)</h1>;
+
 function App() {
   return (
-    // 3. Contenedor de rutas
     <Routes>
+      {/* 1. Ruta principal (Homepage) */}
+      <Route path="/" element={<HomePage />} />
+      
+      {/* 2. Redirección (si alguien escribe /homepage, lo manda a /) */}
+      <Route path="/homepage" element={<Navigate to="/" replace />} />
 
-      {/* Cuando la URL sea /login, muestra el componente LoginPage */}
+      {/* 3. Rutas de autenticación */}
       <Route path="/login" element={<LoginPage />} />
-      <Route path ="/register" element={<RegisterPage/>}/>
+      <Route path="/register" element={<RegisterPage />} />
 
-      {/* Ruta para la raíz (puedes poner un mensaje simple o redirigir) */}
-      <Route path="/" element={
-          <div>
-              <h1>Página Principal</h1>
-              <p>Ve a <a href="/login">/login</a> para ver el saludo.</p>
-          </div>
-      } />
+      {/* 4. Ruta de creación (corregida a /creator para que coincida con tu ActionCard) */}
+      <Route path="/creator" element={<PestañaCreacion />} />
       
-      {/* Ruta para la pestaña de creación*/}
-      <Route path="/create" element={<PestañaCreacion />} />
-      
+      {/* 5. Rutas de usuario */}
       <Route path="/carrito" element={<Carrito />} />
-
-      {/*Ruta para la pestaña de Perfil*/}
       <Route path="/perfil" element={<Perfil />} />
-      
-      {/* Ruta para cualquier otra URL no encontrada */}
+
+      {/* 6. Rutas placeholder (para que los links de la Nav y Cards funcionen) */}
+      <Route path="/menu" element={<MenuPage />} />
+      <Route path="/mis-creaciones" element={<MisCreacionesPage />} />
+      {/* Puedes agregar /deals y /pickup aquí también */}
+
+      {/* 7. Ruta de 404 (al final) */}
       <Route path="*" element={<h1>404 - Página No Encontrada</h1>} />
     </Routes>
   );
 }
 
 export default App;
-
