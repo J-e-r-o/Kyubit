@@ -9,7 +9,7 @@ const RegisterPage = () => {
       
       
       <div className="relative hidden lg:block lg:w-1/2 h-full flex-col">
-        <div className="absolute top-[58%] left-[6%] flex flex-col z-10">
+        <div className="absolute top-[55%] left-[6%] flex flex-col z-10">
           <h1 className="text-8xl xl:text-8xl 2xl:text-9xl text-[#E0E0E0] font-extrabold font-sans">
             Tu creación <br/> Tus reglas
           </h1>
