@@ -1,4 +1,4 @@
-package um.edu.pizzum.burgum.services;
+package um.edu.pizzum.burgum.services.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import um.edu.pizzum.burgum.controllers.AuthResponse;
 import um.edu.pizzum.burgum.dto.LoginDto;
 import um.edu.pizzum.burgum.dto.RegisterRequestDTO;
-import um.edu.pizzum.burgum.entities.User.Role;
 import um.edu.pizzum.burgum.entities.User;
+import um.edu.pizzum.burgum.entities.User.Role;
 import um.edu.pizzum.burgum.repository.UserRepository;
 
 @Service
@@ -26,9 +26,14 @@ public class AuthService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        UserDetails user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        String token = jwtService.getToken(user);
-        return AuthResponse.builder().token(token).build();
+        UserDetails userDetails = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        User user = (User) userDetails;
+        String token = jwtService.getToken(userDetails);
+        return AuthResponse.builder()
+                .token(token)
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .build();
     }
 
     public AuthResponse register(RegisterRequestDTO request){
@@ -50,7 +55,30 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(token)
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .build();
+    }
+
+    public AuthResponse registerAdmin(RegisterRequestDTO request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("El email ya se encuentra registrado.");
+        }
+
+        User u = User.builder()
+                .name(request.getName())
+                .lastname(request.getLastname())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.ROLE_ADMIN)
+                .build();
+        userRepository.save(u);
+
+        String token = jwtService.getToken(u);
+        return AuthResponse.builder()
+                .token(token)
+                .email(u.getEmail())
+                .role(u.getRole().name())
                 .build();
     }
 }
-

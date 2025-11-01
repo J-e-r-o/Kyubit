@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import um.edu.pizzum.burgum.services.JwtService;
+import um.edu.pizzum.burgum.services.Impl.JwtService;
 
 import java.io.IOException;
 
