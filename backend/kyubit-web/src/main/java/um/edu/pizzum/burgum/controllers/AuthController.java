@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import um.edu.pizzum.burgum.dto.LoginDto;
 import um.edu.pizzum.burgum.dto.RegisterRequestDTO;
-import um.edu.pizzum.burgum.services.AuthService;
+import um.edu.pizzum.burgum.services.Impl.AuthService;
 
 @RestController
 @RequestMapping("/api/auth")

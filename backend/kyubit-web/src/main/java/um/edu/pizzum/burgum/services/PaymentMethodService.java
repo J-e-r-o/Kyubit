@@ -6,20 +6,17 @@ import java.util.List;
 
 public interface PaymentMethodService {
 
-    //Creo que no esta bien porque tambien deberia pasarle el id del usuario duenio del metodo de pago
+    PaymentMethodDto create(PaymentMethodDto dto);
 
-    //Post
-    PaymentMethodDto createPaymentMethod (PaymentMethodDto paymentMethodDto);
+    PaymentMethodDto update(Long id, PaymentMethodDto dto);
 
-    //Get
-    PaymentMethodDto getPaymentMethodById(Long paymentMethodId);
+    PaymentMethodDto getById(Long id);
 
-    //Update
-    PaymentMethodDto updatePaymentMethod(Long paymentMethodId, PaymentMethodDto updatedPaymentMethod);
+    List<PaymentMethodDto> findAll();
 
-    //Delete
-    void deletePaymentMethod(Long paymentMethodId);
+    List<PaymentMethodDto> findByUserId(Long userId);
 
-
+    void delete(Long id);
 }
+
 

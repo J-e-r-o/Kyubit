@@ -1,4 +1,4 @@
-package um.edu.pizzum.burgum.services;
+package um.edu.pizzum.burgum.services.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

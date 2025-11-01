@@ -1,4 +1,4 @@
-package um.edu.pizzum.burgum.services;
+package um.edu.pizzum.burgum.services.Impl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
