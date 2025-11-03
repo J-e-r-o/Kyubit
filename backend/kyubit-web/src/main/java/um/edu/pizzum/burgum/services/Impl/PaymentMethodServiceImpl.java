@@ -86,7 +86,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     @Override
     @Transactional(readOnly = true)
     public List<PaymentMethodDto> findByUserId(Long userId) {
-        return repo.findByUser_Id(userId).stream().map(PaymentMethodMapper::mapToDto).collect(Collectors.toList());
+        return repo.findByUserId(userId).stream().map(PaymentMethodMapper::mapToDto).collect(Collectors.toList());
     }
 
     @Override

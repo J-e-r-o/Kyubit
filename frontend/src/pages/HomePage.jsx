@@ -2,12 +2,13 @@
 import React from 'react';
 import HomePageNav from '../components/HomePageNav';
 import ActionCard from '../components/ActionCard';
-
+import { useAuth } from '../context/AuthContext'; 
 import MisCreacionesImg from '../assets/burga.png';
 import CrearImg from '../assets/prueba5.png';
 import MenuImg from '../assets/prueba7.png';
 
 const HomePage = () => {
+  const { user } = useAuth();
  return (
   <div className="relative flex flex-col min-h-screen bg-white overflow-hidden">
 
@@ -26,7 +27,9 @@ const HomePage = () => {
 
        {/*parte de arriba*/}
        <header className="text-center py-8">
-        <h1 className="text-5xl font-bold text-gray-900">¡Bienvenido de nuevo, Fulanito!</h1> {/*esto hay que ver como lo sacamos de back*/}
+        <h1 className="text-5xl font-bold text-gray-900">¡Hola <span className="text-orange-500"> 
+              {user?.name}
+            </span>, tu comida te espera!</h1> 
         <p className="text-xl text-gray-600 mt-4">¿Listo para ser tu propio chef?</p>
        </header>
 

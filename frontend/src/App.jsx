@@ -1,6 +1,6 @@
-// src/App.jsx
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext'; // Importamos el hook
 
 // Importa tus páginas
 import LoginPage from './pages/LoginPage';
@@ -9,6 +9,8 @@ import HomePage from './pages/HomePage';
 import PestañaCreacion from './pages/PestañaCreacion';
 import Perfil from './pages/Perfil';
 import CheckoutPage from './pages/CheckoutPage';
+import ProtectedRoute from './components/ProtectedRoute'; // <-- 1. Importa el Guardia
+
 // Páginas placeholder para que los links no den 404
 const MenuPage = () => <h1>Página de Menú (Próximamente)</h1>;
 const MisCreacionesPage = () => <h1>Página de Mis Creaciones (Próximamente)</h1>;
@@ -16,30 +18,30 @@ const MisCreacionesPage = () => <h1>Página de Mis Creaciones (Próximamente)</h
 function App() {
   return (
     <Routes>
-      {/* 1. Ruta principal (Homepage) */}
-      <Route path="/" element={<HomePage />} />
       
-      {/* 2. Redirección (si alguien escribe /homepage, lo manda a /) */}
-      <Route path="/homepage" element={<Navigate to="/" replace />} />
-
-      {/* 3. Rutas de autenticación */}
+      {/* --- RUTAS PÚBLICAS --- */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/homepage" element={<Navigate to="/" replace />} />
 
-      {/* 4. Ruta de creación (corregida a /creator para que coincida con tu ActionCard) */}
-      <Route path="/creator" element={<PestañaCreacion />} />
-      
-      {/* 5. Rutas de usuario */}
-      <Route path="/carrito" element={<CheckoutPage />} />
-      <Route path="/perfil" element={<Perfil />} />
+      {/* --- RUTAS PROTEGIDAS (EL "HARD WALL") --- */}
+      {/* Usamos <ProtectedRoute /> como "padre"*/}
+      <Route element={<ProtectedRoute />}>
+        {/* Si el usuario está logueado, podrá ver estas páginas. */}
+        {/* Si no, <ProtectedRoute> lo redirigirá a /login. */}
+        
+        <Route path="/" element={<HomePage />} />
+        <Route path="/homepage" element={<Navigate to="/" replace />} />
+        <Route path="/creator" element={<PestañaCreacion />} />
+        <Route path="/carrito" element={<CheckoutPage />} />
+        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/menu" element={<MenuPage />} />
+        <Route path="/mis-creaciones" element={<MisCreacionesPage />} />
+      </Route>
 
-      {/* 6. Rutas placeholder (para que los links de la Nav y Cards funcionen) */}
-      <Route path="/menu" element={<MenuPage />} />
-      <Route path="/mis-creaciones" element={<MisCreacionesPage />} />
-      {/* Puedes agregar /deals y /pickup aquí también */}
-
-      {/* 7. Ruta de 404 (al final) */}
+      {/*Ruta 404*/}
       <Route path="*" element={<h1>404 - Página No Encontrada</h1>} />
+
     </Routes>
   );
 }

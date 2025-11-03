@@ -1,8 +1,6 @@
 package um.edu.pizzum.burgum.dto;
 
 import lombok.*;
-import um.edu.pizzum.burgum.entities.User;
-
 
 @Builder
 @NoArgsConstructor
@@ -16,6 +14,5 @@ public class PaymentMethodDto {
     private String lastFourDigits;
     private String expirationDate;
     private String token;
-    private User user;
     private Long userId;
 }

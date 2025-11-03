@@ -1,0 +1,65 @@
+# ====================================
+# 1. Configuraciones de IDE (IntelliJ)
+# ====================================
+
+# Archivos de configuracion de IntelliJ IDEA que son personales
+# Ignora el directorio .idea/ en la raiz (si existe)
+.idea/
+
+# Ignora el directorio .idea/ especifico dentro de la carpeta del backend
+# (Ajusta 'kyubit-web' si el nombre de tu carpeta es diferente)
+backend/kyubit-web/.idea/
+
+# Archivos de modulo (IML)
+*.iml
+*.iws
+*.ipr
+
+# ====================================
+# 2. Archivos de BUILD/Compilacion (Java/Backend)
+# ====================================
+
+# Directorios de salida de compilacion (Maven, Gradle)
+/target/
+/build/
+/out/
+/classes/
+
+# Archivos de logs
+*.log
+*.temp
+
+# Archivos de paquetes y ejecutables
+*.jar
+*.war
+*.zip
+*.rar
+*.class
+
+# ====================================
+# 3. Archivos y carpetas del Frontend (Node.js/NPM/Vite)
+# ====================================
+
+# Dependencias de Node.js (se regeneran con package.json)
+/node_modules
+
+# Carpetas de cache de NPM, Yarn
+/npm-debug.log
+/yarn-error.log
+
+# Directorios de salida de produccion del frontend (Vite genera 'dist')
+/dist
+
+# ====================================
+# 4. Archivos del Sistema Operativo
+# ====================================
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Configuraciones de entorno (claves, tokens, etc.)
+# Si tienes un archivo .env para variables de entorno sensibles, inclúyelo
+.env

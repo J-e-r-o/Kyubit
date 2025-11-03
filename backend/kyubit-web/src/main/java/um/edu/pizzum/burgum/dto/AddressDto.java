@@ -16,8 +16,6 @@ public class AddressDto {
     private String city;
     private String zipCode;
     private String notes;
-
-    // ¡CORRECCIÓN! Solo el ID del usuario, no la entidad completa.
     private Long userId;
 
 }

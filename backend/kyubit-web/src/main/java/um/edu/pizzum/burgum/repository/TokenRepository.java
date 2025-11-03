@@ -9,16 +9,17 @@ import java.util.Optional;
 
 public interface TokenRepository extends JpaRepository<Token, Long> {
 
-//    /**
-//     * Consulta personalizada para encontrar todos los tokens de un usuario que aún son válidos.
-//     * Esta versión usa la navegación de objetos de JPQL (t.user.id), que es la forma correcta
-//     * y más limpia de escribir la consulta.
-//     */
-//    @Query("""
-//        SELECT t FROM Token t
-//        WHERE t.user.id = :userId AND (t.expired = false OR t.revoked = false)
-//    """)
-//    List<Token> findAllValidTokenByUser(Long userId);
+    /**
+     * Consulta personalizada para encontrar todos los tokens de un usuario que aún son válidos.
+     * Esta versión incluye AMBAS correcciones:
+     * 1. Usa 'FROM tokens t' (el nombre de la entidad de tu @Entity(name="tokens"))
+     * 2. Usa 't.user.id = :userId' para comparar el ID del usuario (Long) con el parámetro (Long).
+     */
+    @Query("""
+        SELECT t FROM tokens t
+        WHERE t.user.id = :userId AND (t.expired = false OR t.revoked = false)
+    """)
+    List<Token> findAllValidTokenByUser(Long userId);
 
     Optional<Token> findByToken(String token);
 }

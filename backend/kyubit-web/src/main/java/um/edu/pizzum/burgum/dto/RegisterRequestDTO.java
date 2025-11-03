@@ -2,19 +2,21 @@ package um.edu.pizzum.burgum.dto;
 
 import lombok.Data;
 
-
 @Data
-
 public class RegisterRequestDTO {
+
     private String name;
     private String lastname;
     private String email;
     private String password;
-    private Role role;
-
+    private String birthdate; // El frontend lo envía como String "YYYY-MM-DD"
+    private AddressDto address;
+    private PaymentMethodDto payment;
 
     public enum Role {
         ROLE_ADMIN,
         ROLE_CLIENTE
     }
 }
+
+
