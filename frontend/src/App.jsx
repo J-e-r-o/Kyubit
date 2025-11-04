@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage';
 import PestañaCreacion from './pages/PestañaCreacion';
 import Perfil from './pages/Perfil';
 import Carrito from './pages/Carrito';
+import CreatePizza from './pages/createPizza';
 
 // Páginas placeholder para que los links no den 404
 const MenuPage = () => <h1>Página de Menú (Próximamente)</h1>;
@@ -29,6 +30,7 @@ function App() {
 
       {/* 4. Ruta de creación (corregida a /creator para que coincida con tu ActionCard) */}
       <Route path="/creator" element={<PestañaCreacion />} />
+      <Route path="/createPizza" element={<CreatePizza />} />
       
       {/* 5. Rutas de usuario */}
       <Route path="/carrito" element={<Carrito />} />
