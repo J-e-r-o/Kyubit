@@ -5,14 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c8071774-42ce-4fed-86c9-6168e5bdefa3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/controllers/OrderController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/dto/OrderRequestDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/dto/OrderResponseDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/services/Impl/OrderServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/services/OrderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/services/PaymentSimulator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/dto/AddCartItemRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/dto/CartDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/dto/CartItemDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/dto/CheckoutRequestDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/dto/UpdateCartItemRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/entities/Cart.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/entities/CartItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/repository/CartItemRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/repository/CartRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/services/CartService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/dto/OrderItemDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/dto/OrderItemDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/um/edu/pizzum/burgum/exceptions/VoidStockException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/config/AppConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/config/JwtAuthenticationFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/config/SecurityConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/config/SeedConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/controllers/AdminController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/controllers/AuthController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/controllers/AuthResponse$AuthResponseBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/controllers/AuthResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/controllers/CreationController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/dto/OrderItemDto$OrderItemDtoBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/dto/OrderItemDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/dto/PaymentMethodDto$PaymentMethodDtoBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/dto/PaymentMethodDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/entities/User$Role.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/entities/User$UserBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/entities/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/exceptions/CreationNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/exceptions/ResourceNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/exceptions/VoidStockException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/repository/CreationRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/repository/PaymentMethodsRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/services/AuthService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/services/CreationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/services/Impl/CreationServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/services/Impl/UserDetailsServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/services/JwtService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/um/edu/pizzum/burgum/services/PaymentMethodService.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
