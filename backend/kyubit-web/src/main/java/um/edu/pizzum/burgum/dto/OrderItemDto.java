@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderItemDto { // Usando DTO en mayúsculas para consistencia
+public class OrderItemDto {
 
     private Long id;
 
