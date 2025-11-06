@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.*;
 
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -70,10 +69,27 @@ public class User implements UserDetails {
 
 
     // Relación OneToMany: Un usuario (Admin) puede subir muchas Creations
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Creation> createdProducts = new ArrayList<>(); // ¡NUEVO CAMPO!
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Creation> createdProducts = new ArrayList<>();
 
 
+
+    // Nueva relación: un usuario puede tener varios PaymentMethod
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<PaymentMethod> paymentMethods = new ArrayList<>();
+
+    // Helpers para mantener ambas caras de la relación sincronizadas
+    public void addPaymentMethod(PaymentMethod pm) {
+        if (pm == null) return;
+        paymentMethods.add(pm);
+        pm.setUser(this);
+    }
+
+    public void removePaymentMethod(PaymentMethod pm) {
+        if (pm == null) return;
+        paymentMethods.remove(pm);
+        pm.setUser(null);
+    }
 
     //Hasta aca---------------------------------------------------------------------------------------------------
 
@@ -115,10 +131,7 @@ public class User implements UserDetails {
         ROLE_ADMIN,
         ROLE_CLIENTE
     }
-
-
-
-
 }
+
 
 

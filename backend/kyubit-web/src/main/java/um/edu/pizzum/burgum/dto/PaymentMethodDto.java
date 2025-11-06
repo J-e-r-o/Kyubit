@@ -16,6 +16,5 @@ public class PaymentMethodDto {
     private String lastFourDigits;
     private String expirationDate;
     private String token;
-    private User user;
     private Long userId;
 }

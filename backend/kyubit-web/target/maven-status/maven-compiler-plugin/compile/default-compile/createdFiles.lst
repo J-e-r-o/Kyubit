@@ -1,0 +1,10 @@
+um\edu\pizzum\burgum\entities\PaymentMethod.class
+um\edu\pizzum\burgum\entities\Token$TokenType.class
+um\edu\pizzum\burgum\entities\Token.class
+um\edu\pizzum\burgum\entities\Creation.class
+um\edu\pizzum\burgum\entities\Address.class
+um\edu\pizzum\burgum\entities\OrderItem.class
+um\edu\pizzum\burgum\entities\User.class
+um\edu\pizzum\burgum\entities\User$Role.class
+um\edu\pizzum\burgum\entities\Order.class
+um\edu\pizzum\burgum\entities\Ingredient.class
