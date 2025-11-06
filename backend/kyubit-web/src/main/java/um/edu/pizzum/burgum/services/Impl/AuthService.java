@@ -184,9 +184,7 @@ public class AuthService {
                 .build();
     }
 
-    /**
-     * 👑 REGISTRO DE ADMIN
-     */
+
     public AuthResponse registerAdmin(RegisterRequestDTO request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalArgumentException("El email ya se encuentra registrado.");

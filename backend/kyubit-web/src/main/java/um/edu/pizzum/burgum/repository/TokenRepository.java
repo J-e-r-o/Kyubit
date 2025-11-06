@@ -2,6 +2,7 @@ package um.edu.pizzum.burgum.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param; // <-- 1. IMPORTA @Param
 import um.edu.pizzum.burgum.entities.Token;
 
 import java.util.List;
@@ -17,10 +18,9 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
      */
     @Query("""
         SELECT t FROM tokens t
-        WHERE t.user.id = :userId AND (t.expired = false OR t.revoked = false)
-    """)
-    List<Token> findAllValidTokenByUser(Long userId);
+        WHERE t.user.id = :userId AND (t.expired = false AND t.revoked = false)
+    """) // <-- 2. CAMBIADO DE 'OR' A 'AND'
+    List<Token> findAllValidTokenByUser(@Param("userId") Long userId); // <-- 3. AÑADIDO @Param("userId")
 
     Optional<Token> findByToken(String token);
 }
-

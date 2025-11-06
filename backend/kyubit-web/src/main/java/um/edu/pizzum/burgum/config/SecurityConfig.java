@@ -41,9 +41,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManager ->
                         sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // ¡CORRECCIÓN!
-                // Usamos el 'authenticationProvider' inyectado (el de AppConfig)
-                // en lugar de llamar a un método local.
+
                 .authenticationProvider(authenticationProvider)
 
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

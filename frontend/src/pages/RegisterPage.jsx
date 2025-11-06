@@ -37,20 +37,15 @@ const RegisterPage = () => {
 
   // Función para guardar datos del Modal de Dirección
   const handleSaveAddress = (data) => {
-    setAddress(data); // data es { title: '...', details: '...' }
-    setIsAddressModalOpen(false); // Cierra el modal
+    setAddress(data); 
+    setIsAddressModalOpen(false); 
   };
 
-  // Función para guardar datos del Modal de Pago
-  // NOTA: Asumo que PaymentForm se modificará para tener un prop 'onSave'
-  // igual que AddressForm, basándome en tu CheckoutPage.jsx.
+
   const handleSavePayment = (data) => {
-    // Aquí procesarías los datos de la tarjeta.
-    // Por ahora, simulamos que guardamos algo simple.
-    // En un futuro, PaymentForm te pasaría el 'token' de la pasarela de pago.
-    // Por ahora, guardamos un placeholder basado en los datos que SÍ tenemos.
+  
     setPayment(data); 
-    setIsPaymentModalOpen(false); // Cierra el modal
+    setIsPaymentModalOpen(false); 
   };
 
   const handleSubmit = async (e) => {
@@ -62,7 +57,6 @@ const RegisterPage = () => {
       return;
     }
 
-    // --- Nueva Validación ---
     if (!address) {
       setError('Por favor, agrega una dirección.');
       return;
@@ -75,31 +69,25 @@ const RegisterPage = () => {
     setLoading(true); 
     
     try {
-      // Prepara los datos para enviar (deben coincidir con el DTO del backend)
       const dataToSubmit = {
         // Datos del usuario
         name: formData.name,
         lastname: formData.lastname,
         email: formData.email,
         password: formData.password,
-        birthdate: formData.birthdate, // <-- ¡CORRECCIÓN AÑADIDA!
-        // Datos anidados de la dirección y pago
+        birthdate: formData.birthdate, 
         address: address, 
         payment: payment, 
       };
 
-      // --- ¡LA CONEXIÓN! ---
-      // NOTA: Tu backend (AuthService/RegisterRequestDTO) debe estar
-      // preparado para recibir este objeto complejo.
+
       const response = await authService.register(dataToSubmit);
 
-      // ¡ÉXITO!
       console.log('Respuesta del servidor:', response.data);
       alert('¡Registro exitoso! Serás redirigido al login.');
       navigate('/login'); 
 
     } catch (err) {
-      // --- MANEJO DE ERRORES ---
       console.error("Error en registro:", err);
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
@@ -121,7 +109,6 @@ const RegisterPage = () => {
         
         {/* --- COLUMNA IZQUIERDA (IMAGEN Y TEXTO) --- */}
         <div className="relative hidden lg:block lg:w-1/2 h-full flex-col">
-          {/* Corregido: left-[0%] a pl-12 o pl-20 para un margen consistente */}
           <div className="absolute top-[55%] flex flex-col z-10 pl-10 lg:pl-10"> 
             <h1 className="text-7xl xl:text-8xl 2xl:text-9xl text-[#E0E0E0] font-extrabold font-sans">
               Tu creación <br/> Tus reglas.
@@ -141,27 +128,26 @@ const RegisterPage = () => {
             </div>
 
             {/* --- FORMULARIO CONECTADO --- */}
-            {/* Conectamos la función handleSubmit al evento onSubmit del formulario */}
             <form className="space-y-4" onSubmit={handleSubmit}>
               
               {/* Fila para Nombre y Apellido */}
               <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
                 <input
                   type="text" 
-                  name="name" // El 'name' debe coincidir con el estado
+                  name="name" 
                   placeholder="Nombre"
                   required
-                  value={formData.name} // Conectamos el valor al estado
-                  onChange={handleChange} // Conectamos el cambio al manejador
+                  value={formData.name} 
+                  onChange={handleChange} 
                   className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#FA8100]"
                 />
                 <input
                   type="text" 
-                  name="lastname" // 'name' coincide con el estado
+                  name="lastname" o
                   placeholder="Apellidos"
                   required
-                  value={formData.lastname} // Conectamos el valor
-                  onChange={handleChange} // Conectamos el cambio
+                  value={formData.lastname}
+                  onChange={handleChange} 
                   className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#FA8100]"
                 />
               </div>
@@ -172,10 +158,10 @@ const RegisterPage = () => {
                 <input
                   id="date"
                   type="date" 
-                  name="birthdate" // 'name' coincide con el estado
+                  name="birthdate" 
                   placeholder="Fecha de nacimiento"
-                  value={formData.birthdate} // Conectamos el valor
-                  onChange={handleChange} // Conectamos el cambio
+                  value={formData.birthdate} 
+                  onChange={handleChange} 
                   className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#FA8100]"
                 />
               </div>
@@ -183,48 +169,47 @@ const RegisterPage = () => {
               {/* Campo Email */}
               <input
                 type="email" 
-                name="email" // 'name' coincide con el estado
+                name="email" 
                 placeholder="Email"
                 autoComplete="email"
                 required
-                value={formData.email} // Conectamos el valor
-                onChange={handleChange} // Conectamos el cambio
+                value={formData.email} 
+                onChange={handleChange} 
                 className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#FA8100]"
               />
               
               {/* Campo Contraseña */}
               <input
                 type="password" 
-                name="password" // 'name' coincide con el estado
+                name="password" 
                 placeholder="Nueva contraseña"
                 autoComplete="new-password"
                 required
-                value={formData.password} // Conectamos el valor
-                onChange={handleChange} // Conectamos el cambio
+                value={formData.password} 
+                onChange={handleChange}
                 className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#FA8100]"
               />
               {/* Campo Confirmar Contraseña */}
               <input
                 type="password" 
-                name="confirmPassword" // 'name' coincide con el estado
+                name="confirmPassword" 
                 placeholder="Confirma la contraseña"
                 autoComplete="new-password"
                 required
-                value={formData.confirmPassword} // Conectamos el valor
-                onChange={handleChange} // Conectamos el cambio
+                value={formData.confirmPassword} 
+                onChange={handleChange} 
                 className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#FA8100]"
               />
 
               {/* --- NUEVOS BOTONES DE MODAL --- */}
-              {/* Apilados en móvil (flex-col), en fila en pantallas pequeñas (sm:flex-row) */}
               <div className="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0 pt-2">
                 <button
-                  type="button" // Importante: type="button" para no enviar el formulario
+                  type="button" 
                   onClick={() => setIsAddressModalOpen(true)}
                   className={`w-full flex justify-between items-center p-3 rounded-md border transition-colors ${
                     address
-                      ? 'border-green-500 bg-green-50' // Estado "completado"
-                      : 'border-[#301201] bg-[#301201] text-white hover:bg-[#241000]' // Estado por defecto (borde del color del fondo)
+                      ? 'border-green-500 bg-green-50'
+                      : 'border-[#301201] bg-[#301201] text-white hover:bg-[#241000]' 
                   }`}
                 >
                   <span className={`${address ? 'text-green-700 font-medium' : 'text-white'}`}>
@@ -238,8 +223,8 @@ const RegisterPage = () => {
                   onClick={() => setIsPaymentModalOpen(true)}
                   className={`w-full flex justify-between items-center p-3 rounded-md border transition-colors ${
                     payment
-                      ? 'border-green-500 bg-green-50' // Estado "completado"
-                      : 'border-[#301201] bg-[#301201] text-white hover:bg-[#241000]' // Estado por defecto (borde del color del fondo)
+                      ? 'border-green-500 bg-green-50' 
+                      : 'border-[#301201] bg-[#301201] text-white hover:bg-[#241000]'
                   }`}
                 >
                   <span className={`${payment ? 'text-green-700 font-medium' : 'text-white'}`}>
@@ -254,10 +239,9 @@ const RegisterPage = () => {
               {/* Botón de Registro */}
               <button
                 type="submit"
-                disabled={loading} // Conectamos el estado 'disabled'
+                disabled={loading} 
                 className="w-full bg-[#FA8100] text-white font-bold p-3 rounded-md hover:bg-orange-600 transition-colors duration-300 disabled:opacity-50"
               >
-                {/* Conectamos la variable 'loading' para cambiar el texto */}
                 {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
               </button>
             </form>
@@ -289,10 +273,7 @@ const RegisterPage = () => {
         onClose={() => setIsPaymentModalOpen(false)} 
         title="Agregar Método de Pago"
       >
-        {/* IMPORTANTE: Asumo que tu PaymentForm será modificado para tener un prop 'onSave'
-          similar a 'AddressForm', basándome en tu archivo 'CheckoutPage.jsx'.
-          El código que pegaste para 'PaymentForm' solo tiene 'onClose'.
-        */}
+       
         <PaymentForm onSave={handleSavePayment} onClose={() => setIsPaymentModalOpen(false)} />
       </Modal>
     </>

@@ -9,12 +9,8 @@ import lombok.*;
 public class LoginDto {
 
     private String email;
-    private Role role;
     private String password;
 
-    public enum Role {
-        ROLE_ADMIN,
-        ROLE_CLIENTE
-    }
+
 
 }

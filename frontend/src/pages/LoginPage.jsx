@@ -1,14 +1,14 @@
-import React, { useState } from 'react'; // <-- FALTABA ESTA IMPORTACIÓN
+import React, { useState } from 'react'; 
 import COVER_IMAGE from '../assets/prueba5.png';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // <-- FALTABA ESTA IMPORTACIÓN
-import authService from '../services/authService'; // <-- FALTABA ESTA IMPORTACIÓN
+import { useAuth } from '../context/AuthContext'; 
+import authService from '../services/authService'; 
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login } = useAuth(); // Ahora 'useAuth' está importado
+  const { login } = useAuth(); 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,7 +16,7 @@ const LoginPage = () => {
     setError('');
 
     try {
-      // Usamos el authService que ya creamos (más limpio que fetch)
+      
       const response = await authService.login({ email, password });
 
       if (response.data) {
