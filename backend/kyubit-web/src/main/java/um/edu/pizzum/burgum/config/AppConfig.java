@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import um.edu.pizzum.burgum.repository.UserRepository;
 
+
+
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
@@ -40,6 +42,7 @@ public class AppConfig {
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("No se ha encontrado al usuario"));
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

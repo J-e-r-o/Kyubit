@@ -8,9 +8,13 @@ import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import PestañaCreacion from './pages/PestañaCreacion';
 import Perfil from './pages/Perfil';
+<<<<<<< HEAD
 import Carrito from './pages/Carrito';
 import CreatePizza from './pages/createPizza';
 
+=======
+import CheckoutPage from './pages/CheckoutPage';
+>>>>>>> origin/main
 // Páginas placeholder para que los links no den 404
 const MenuPage = () => <h1>Página de Menú (Próximamente)</h1>;
 const MisCreacionesPage = () => <h1>Página de Mis Creaciones (Próximamente)</h1>;
@@ -33,7 +37,7 @@ function App() {
       <Route path="/createPizza" element={<CreatePizza />} />
       
       {/* 5. Rutas de usuario */}
-      <Route path="/carrito" element={<Carrito />} />
+      <Route path="/carrito" element={<CheckoutPage />} />
       <Route path="/perfil" element={<Perfil />} />
 
       {/* 6. Rutas placeholder (para que los links de la Nav y Cards funcionen) */}
