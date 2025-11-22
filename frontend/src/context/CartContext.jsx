@@ -1,45 +1,42 @@
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const CartContext = createContext();
 
+export const useCart = () => useContext(CartContext);
+
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+  // Inicializamos el estado buscando en localStorage si ya hay algo guardado
+  const [cartItems, setCartItems] = useState(() => {
+    const localData = localStorage.getItem('cart');
+    return localData ? JSON.parse(localData) : [];
+  });
 
-  // Agregar ítem (pizza/hamburguesa/custom)
-  const addToCart = (item) => {
-    setCart((prev) => [...prev, item]);
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const addToCart = (product) => {
+    // Generamos un ID temporal para el frontend si no viene del backend aún
+    const newItem = { ...product, tempId: Date.now() };
+    setCartItems((prev) => [...prev, newItem]);
   };
 
-  // Cambiar cantidad
-  const updateQuantity = (id, newQty) => {
-    setCart((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: newQty } : item
-      )
-    );
+  const removeFromCart = (tempId) => {
+    setCartItems((prev) => prev.filter(item => item.tempId !== tempId));
   };
 
-  // Eliminar
-  const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+  const clearCart = () => {
+    setCartItems([]);
   };
 
-  // Vaciar
-  const clearCart = () => setCart([]);
-
-  // Total
-  const cartTotal = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  // Calcula el subtotal dinámicamente
+  const getCartTotal = () => {
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
 
   return (
-    <CartContext.Provider
-      value={{ cart, addToCart, updateQuantity, removeFromCart, clearCart, cartTotal }}
-    >
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart, getCartTotal }}>
       {children}
     </CartContext.Provider>
   );
 };
-
-export const useCart = () => useContext(CCartContext);

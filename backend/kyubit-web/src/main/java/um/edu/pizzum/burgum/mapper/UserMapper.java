@@ -12,10 +12,6 @@ import java.util.stream.Collectors;
 
 public class UserMapper {
 
-    /**
-     * Convierte la Entidad User a su DTO (Output DTO).
-     * Mapea todas las colecciones a listas/sets de IDs.
-     */
     public static UserDto mapToDto(User entity) {
         if (entity == null) {
             return null;
@@ -53,13 +49,6 @@ public class UserMapper {
                 .build();
     }
 
-
-    /**
-     * Convierte un DTO de entrada (UserDTO) a una Entidad User para actualización.
-     * ⚠️ ATENCIÓN: Este método NO mapea el 'password' ni las colecciones (tokens, addresses, etc.).
-     * La lógica de seguridad (password) y la actualización de relaciones
-     * (añadir/quitar favoritos, direcciones) debe manejarse en la capa de servicio.
-     */
     public static User mapToEntityForUpdate(UserDto dto) {
         if (dto == null) {
             return null;

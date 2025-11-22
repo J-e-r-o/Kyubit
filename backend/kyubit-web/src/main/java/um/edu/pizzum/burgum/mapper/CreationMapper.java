@@ -13,11 +13,7 @@ import java.util.stream.Collectors;
 
 public class CreationMapper {
 
-    /**
-     * DTO -> Entidad.
-     * Crea placeholders para User e Ingredients (sólo with id) — la capa de servicio
-     * DEBE buscar las entidades reales y reemplazar/validar antes de persistir.
-     */
+
     public static Creation mapToCreation(CreationDto dto) {
         if (dto == null) return null;
 
