@@ -33,9 +33,6 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    /**
-     * 🔐 LOGIN
-     */
     public AuthResponse login(LoginDto request) {
         // 1️⃣ Autenticación
         authenticationManager.authenticate(

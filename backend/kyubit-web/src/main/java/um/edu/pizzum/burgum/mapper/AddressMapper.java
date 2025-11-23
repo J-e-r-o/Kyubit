@@ -9,11 +9,6 @@ import java.util.stream.Collectors;
 
 public class AddressMapper {
 
-    /**
-     * Convierte el DTO (AddressDto) a la Entidad (Address).
-     * ⚠️ IMPORTANTE: Crea un 'placeholder' de User solo con el ID.
-     * La capa de servicio DEBE buscar y asignar el User completo.
-     */
     public static Address mapToAddress(AddressDto addressDto) {
         if (addressDto == null) {
             return null;
@@ -37,10 +32,6 @@ public class AddressMapper {
     }
 
 
-    /**
-     * Convierte la Entidad (Address) al DTO (AddressDto).
-     * Extrae el ID de la entidad User relacionada.
-     */
     public static AddressDto mapToAddressDto(Address address) {
         if (address == null) {
             return null;

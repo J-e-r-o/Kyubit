@@ -10,11 +10,6 @@ import java.util.stream.Collectors;
 
 public class IngredientMapper {
 
-    /**
-     * Mapea DTO -> Entidad.
-     * Como Ingredient no es el lado propietario de la relación ManyToMany,
-     * se deja el Set<Creation> vacío. La gestión se hace desde Creation.
-     */
     public static Ingredient mapToIngredient(IngredientDto dto) {
         if (dto == null) return null;
 
@@ -27,9 +22,6 @@ public class IngredientMapper {
                 .build();
     }
 
-    /**
-     * Mapea Entidad -> DTO.
-     */
     public static IngredientDto mapToIngredientDto(Ingredient ingredient) {
         if (ingredient == null) return null;
 
