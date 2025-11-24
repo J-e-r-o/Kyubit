@@ -21,5 +21,7 @@ public interface IngredientService {
 
     //Eliminar
     void deleteIngredient(Long id);
+
+    List<IngredientDto> getIngredientsByType(String typeName);
 }
 

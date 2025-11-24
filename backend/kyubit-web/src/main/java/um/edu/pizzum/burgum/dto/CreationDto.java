@@ -8,17 +8,26 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Builder // <--- ESENCIAL: Genera el método .builder()
+@NoArgsConstructor // <--- ESENCIAL: Para que Jackson (JSON) pueda crear el objeto vacío
+@AllArgsConstructor // <--- ESENCIAL: El Builder necesita un constructor con todos los argumentos
 public class CreationDto {
 
     private Long id;
-    private String name;
-    private String productType;
-
-    //Tenemos que usar el id del usuario NO TODA LA ENTIDADDD
     private Long userId;
+    private String name;
+    private String productType; // "PIZZA" o "BURGER"
 
+    // --- Campos Base (Compartidos o Pizza) ---
+    private String size;
+    private String crust; // Se usa para Masa (Pizza) y Pan (Burger)
+    private String sauce;
+    private String cheese;
+
+    // --- Campos Nuevos para Hamburguesa ---
+    private Integer meatCount;
+    private String meatType;
+
+    // --- Lista de IDs de Ingredientes ---
     private Set<Long> ingredientIds;
 }

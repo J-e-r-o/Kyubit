@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import um.edu.pizzum.burgum.dto.AddItemRequest;
+import um.edu.pizzum.burgum.dto.ConfirmOrderRequest;
 import um.edu.pizzum.burgum.dto.OrderDto;
 import um.edu.pizzum.burgum.services.OrderService;
 
@@ -22,5 +23,20 @@ public class OrderController {
     @GetMapping("/cart")
     public ResponseEntity<OrderDto> getCart(@RequestParam Long userId) {
         return ResponseEntity.ok(orderService.getCartByUserId(userId));
+    }
+
+    @DeleteMapping("/items/{itemId}")
+    public ResponseEntity<Void> removeItem(@PathVariable Long itemId) {
+        orderService.removeItemFromOrder(itemId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/confirm")
+    public ResponseEntity<OrderDto> confirmOrder(
+            @PathVariable Long id,
+            @RequestBody ConfirmOrderRequest request) {
+
+        OrderDto confirmedOrder = orderService.confirmOrder(id, request);
+        return ResponseEntity.ok(confirmedOrder);
     }
 }

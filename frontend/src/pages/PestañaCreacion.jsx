@@ -33,7 +33,7 @@ const PestañaCreacion = () => {
               </div>
               <div className='relative z-10 flex flex-col items-center justify-center text-white '>
                 <Link
-                  to="/createPizza"
+                  to="/creacionPizza"
                   className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 hover:scale-105 hover:shadow-lg transition-all"
                 >
                   Crear Pizza
@@ -59,7 +59,7 @@ const PestañaCreacion = () => {
               </div>
               <div className='relative z-10 flex flex-col items-center justify-center text-white'>
                 <Link
-                  to="/createPizza"
+                  to="/creacionHamburguesa"
                   className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 hover:scale-105 hover:shadow-lg transition-all"
                 >
                   Crear Hambuguesa

@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         // 3. Vincular al Usuario
         // NOTA: Asegúrate que en tu entidad PaymentMethod el campo se llame 'client' o 'user'
         // Basado en tu Order.java, parece que usas 'client' para referirte al User.
-        pm.setClient(user);
+        pm.setUser(user);
 
         // 4. Guardar
         PaymentMethod saved = paymentMethodRepository.save(pm);
