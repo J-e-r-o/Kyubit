@@ -73,13 +73,7 @@ const HomePageNav = () => {
           </div>
         ) : (
           <div className="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-600">
-             <Link to="/menu" className="hover:text-brand-primary transition-colors">
-              Menú
-            </Link>
-            <Link to="/deals" className="hover:text-brand-primary transition-colors">
-              Promociones
-            </Link>
-            <Link to="/pickup" className="hover:text-brand-primary transition-colors">
+            <Link to="/sobre-nosotros" className="hover:text-brand-primary transition-colors">
               Sobre Nosotros
             </Link>
           </div>

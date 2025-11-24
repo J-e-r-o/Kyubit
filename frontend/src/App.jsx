@@ -11,6 +11,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import ProtectedRoute from './components/ProtectedRoute'; 
 import CreationPage from './pages/PizzaCreation';
 import BurgerCreation from './pages/BurgerCreation'; 
+import SobreNosotros from './pages/SobreNosotros'; 
 import { CartProvider } from "./context/CartContext";
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import MyCreationsPage from './pages/MyCreationsPage';
@@ -45,11 +46,12 @@ function App() {
           {/* Rutas de Creación Específicas */}
           <Route path="/creacionPizza" element={<CreationPage/>} />
           <Route path="/creacionHamburguesa" element={<BurgerCreation/>} /> {/* <--- 2. NUEVA RUTA */}
+          <Route path="/sobre-nosotros" element={<SobreNosotros />} />
 
           {/* Rutas del Carrito (Alias para evitar errores de navegación) */}
           <Route path="/carrito" element={<CheckoutPage />} />
           <Route path="/checkout" element={<CheckoutPage />} /> {/* Agregado por seguridad si usas /checkout en los navigate() */}
-
+    
           {/* Otras páginas protegidas */}
           <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/historial" element={<OrderHistoryPage />} />
