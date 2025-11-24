@@ -10,13 +10,16 @@ import Perfil from './pages/Perfil';
 import CheckoutPage from './pages/CheckoutPage';
 import ProtectedRoute from './components/ProtectedRoute'; 
 import CreationPage from './pages/PizzaCreation';
-import BurgerCreation from './pages/BurgerCreation'; // <--- 1. IMPORTAR COMPONENTE
+import BurgerCreation from './pages/BurgerCreation'; 
 import { CartProvider } from "./context/CartContext";
-
-
+import OrderHistoryPage from './pages/OrderHistoryPage';
+import MyCreationsPage from './pages/MyCreationsPage';
+import AdminRoute from './components/AdminRoute';
+import AdminIngredientsPage from './pages/AdminIngredientsPage';
+import AdminUsersPage from './pages/AdminUsersPage';
+import ProfilePage from './pages/ProfilePage';
 // Páginas placeholder para que los links no den 404
-const MenuPage = () => <h1>Página de Menú (Próximamente)</h1>;
-const MisCreacionesPage = () => <h1>Página de Mis Creaciones (Próximamente)</h1>;
+
 
 function App() {
   return (
@@ -48,14 +51,19 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} /> {/* Agregado por seguridad si usas /checkout en los navigate() */}
 
           {/* Otras páginas protegidas */}
-          <Route path="/perfil" element={<Perfil />} />
-          <Route path="/menu" element={<MenuPage />} />
-          <Route path="/mis-creaciones" element={<MisCreacionesPage />} />
+          <Route path="/perfil" element={<ProfilePage />} />
+          <Route path="/historial" element={<OrderHistoryPage />} />
+          <Route path="/mis-creaciones" element={<MyCreationsPage />} />
           
         </Route>
 
         {/* Ruta 404 */}
         <Route path="*" element={<h1>404 - Página No Encontrada</h1>} />
+
+        <Route element={<AdminRoute />}> {/*aca van todos las route de admin*/}
+           <Route path="/admin/productos" element={<AdminIngredientsPage />} />
+           <Route path="/admin/funcionarios" element={<AdminUsersPage />} />
+        </Route>
 
       </Routes>
     </CartProvider>

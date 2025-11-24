@@ -20,6 +20,7 @@ public class Creation {
 
     private String name; // Ej: "Mega Burger"
     private String productType; // "PIZZA" o "BURGER"
+    private String alias; // Nombre del usuario (ej: "Pizza de los Viernes")
 
     // --- CAMPOS COMPARTIDOS O DE PIZZA ---
     private String size;   // Individual, Mediana...
@@ -39,4 +40,7 @@ public class Creation {
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private Set<Ingredient> ingredients = new HashSet<>();
+
+    @Column(name = "is_favorite")
+    private Boolean isFavorite = false; // Por defecto false
 }

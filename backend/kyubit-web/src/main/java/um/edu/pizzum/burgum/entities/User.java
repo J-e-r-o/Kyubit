@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.*;
 
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -32,7 +31,7 @@ public class User implements UserDetails {
     private String lastname;
 
     @Column(nullable = false, unique = true)
-    private String email; // El email es único, pero no es la clave pk
+    private String email;
 
     @Column(nullable = false)
     private String password;
@@ -43,82 +42,53 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
+    // --- LISTAS INICIALIZADAS (Para evitar NullPointer) ---
 
+    @Builder.Default
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Token> tokens = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Creation> createdProducts = new ArrayList<>();
+
+    @Column(name = "is_active", nullable = false)
+    @Builder.Default // Para que al crear sea true por defecto
+    private Boolean isActive = true;
+
+    // --- ¡BORRADO favoriteCreations! Ya no lo usamos ---
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Devuelve el rol en el formato que Spring Security necesita
         return List.of(new SimpleGrantedAuthority(this.role.name()));
     }
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Token> tokens;
-
-    //Desde aca empeze a agregar---------------------------------------------------------------------------
-
-    @ManyToMany
-    @JoinTable(
-            name = "user_favorite_creations",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "creation_id")
-    )
-    private Set<Creation> favoriteCreations = new HashSet<>();
-
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // <--- ¡CORRECCIÓN!
-    private List<Address> addresses = new ArrayList<>();
-
-
-    // Relación OneToMany: Un usuario (Admin) puede subir muchas Creations
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Creation> createdProducts = new ArrayList<>(); // ¡NUEVO CAMPO!
-
-
-
-    //Hasta aca---------------------------------------------------------------------------------------------------
-
-
+    @Override
+    public String getPassword() { return this.password; }
 
     @Override
-    public String getPassword() {
-        return this.password;
-    }
+    public String getUsername() { return this.email; }
 
     @Override
-    public String getUsername() {
-        // Usamos el email como identificador para el login
-        return this.email;
-    }
-
+    public boolean isAccountNonExpired() { return true; }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    public boolean isCredentialsNonExpired() { return true; }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.isActive; // <--- ¡ESTO ES CLAVE!
     }
 
     public enum Role {
         ROLE_ADMIN,
         ROLE_CLIENTE
     }
-
-
-
-
 }
-
-

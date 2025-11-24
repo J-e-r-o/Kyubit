@@ -140,4 +140,12 @@ public class CreationServiceImpl implements CreationService {
         }
         return foundSet;
     }
+
+    @Override
+    public List<CreationDto> getFavoritesByUserId(Long userId) {
+        return creationRepository.findByUserIdAndIsFavoriteTrue(userId)
+                .stream()
+                .map(CreationMapper::mapToCreationDto)
+                .collect(Collectors.toList());
+    }
 }

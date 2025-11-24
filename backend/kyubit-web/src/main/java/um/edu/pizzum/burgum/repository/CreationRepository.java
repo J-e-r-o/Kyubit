@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import um.edu.pizzum.burgum.entities.Creation;
 
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -20,5 +21,6 @@ public interface CreationRepository extends JpaRepository<Creation, Long> {
     @Query("select distinct c from Creation c left join fetch c.ingredients where c.user.id = :userId")
     java.util.List<Creation> findByUserIdWithIngredients(@Param("userId") Long userId);
 
+    List<Creation> findByUserIdAndIsFavoriteTrue(Long userId);
 
 }

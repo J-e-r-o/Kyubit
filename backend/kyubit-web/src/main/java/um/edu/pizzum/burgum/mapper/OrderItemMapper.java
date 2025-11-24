@@ -12,21 +12,32 @@ public class OrderItemMapper {
     public static OrderItemDto mapToDto(OrderItem entity) {
         if (entity == null) return null;
 
-        // Extraer IDs con seguridad
         Long orderId = (entity.getOrder() != null) ? entity.getOrder().getId() : null;
         Long creationId = null;
-        String creationName = "Producto personalizado";
+
+        // --- LÓGICA DE NOMBRE CORREGIDA ---
+        String displayName = "Producto personalizado";
 
         if (entity.getCreation() != null) {
             creationId = entity.getCreation().getId();
-            creationName = entity.getCreation().getName(); // <--- Obtenemos el nombre
+
+            // 1. Verificamos si tiene un Alias (Nombre del usuario)
+            String alias = entity.getCreation().getAlias();
+            String techName = entity.getCreation().getName();
+
+            // 2. Si tiene alias y no está vacío, úsalo. Si no, usa el nombre técnico.
+            if (alias != null && !alias.trim().isEmpty()) {
+                displayName = alias;
+            } else {
+                displayName = techName;
+            }
         }
 
         return OrderItemDto.builder()
                 .id(entity.getId())
                 .orderId(orderId)
                 .creationId(creationId)
-                .creationName(creationName) // <--- Lo guardamos en el DTO
+                .creationName(displayName) // <--- Lo guardamos en el DTO
                 .quantity(entity.getQuantity())
                 .unitPrice(entity.getUnitPrice())
                 .build();

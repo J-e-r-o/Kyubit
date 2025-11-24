@@ -32,6 +32,11 @@ public class CreationMapper {
                 .name(entity.getName())
                 .productType(entity.getProductType()) // PIZZA o BURGER
 
+                // --- CAMPOS NUEVOS (SOLUCIÓN) ---
+                .alias(entity.getAlias())           // Mapeamos el nombre personalizado
+                .isFavorite(entity.getIsFavorite()) // Mapeamos el estado de favorito
+                // --------------------------------
+
                 // Campos Base (Pizza y Burger comparten crust/pan)
                 .size(entity.getSize())
                 .crust(entity.getCrust())
@@ -49,14 +54,13 @@ public class CreationMapper {
 
     /**
      * Convierte el DTO (Frontend) a la Entidad (BD)
-     * Nota: Los ingredientes se resuelven en el Servicio, aquí solo inicializamos el Set vacío.
      */
     public static Creation mapToCreation(CreationDto dto) {
         if (dto == null) {
             return null;
         }
 
-        // Placeholder para el usuario (El servicio buscará el real)
+        // Placeholder para el usuario
         User userPlaceholder = null;
         if (dto.getUserId() != null) {
             userPlaceholder = User.builder().id(dto.getUserId()).build();
@@ -68,6 +72,12 @@ public class CreationMapper {
                 .name(dto.getName())
                 .productType(dto.getProductType())
 
+                // --- CAMPOS NUEVOS (SOLUCIÓN) ---
+                .alias(dto.getAlias())
+                // Si viene nulo, asumimos false para evitar problemas en la BD
+                .isFavorite(dto.getIsFavorite() != null ? dto.getIsFavorite() : false)
+                // --------------------------------
+
                 // Campos Base
                 .size(dto.getSize())
                 .crust(dto.getCrust())
@@ -78,8 +88,7 @@ public class CreationMapper {
                 .meatCount(dto.getMeatCount())
                 .meatType(dto.getMeatType())
 
-                // Inicializamos la lista de ingredientes vacía para evitar NullPointer
-                // (El Service se encarga de buscar los Ingredients por ID y llenarla)
+                // Inicializamos la lista de ingredientes vacía
                 .ingredients(new HashSet<>())
                 .build();
     }
