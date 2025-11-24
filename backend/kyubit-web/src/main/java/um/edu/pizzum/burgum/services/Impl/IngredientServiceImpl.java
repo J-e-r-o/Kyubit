@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import um.edu.pizzum.burgum.dto.IngredientDto;
 import um.edu.pizzum.burgum.entities.Ingredient;
-import um.edu.pizzum.burgum.exceptions.BadRequestException;
+import um.edu.pizzum.burgum.exceptions.BadRequestException; // O tu excepción personalizada
 import um.edu.pizzum.burgum.exceptions.ResourceNotFoundException;
 import um.edu.pizzum.burgum.mapper.IngredientMapper;
 import um.edu.pizzum.burgum.repository.IngredientRepository;
@@ -24,15 +24,15 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public IngredientDto createIngredient(IngredientDto ingredientDto) {
-        if (ingredientDto == null) throw new BadRequestException("ingredientDto cannot be null");
+    public IngredientDto createIngredient(IngredientDto dto) {
+        if (dto == null) throw new BadRequestException("El DTO no puede ser nulo");
+        if (dto.getType() == null) throw new BadRequestException("El tipo de ingrediente es obligatorio (MEAT, BREAD, etc)");
 
-        if (ingredientDto.getName() != null && ingredientRepository.existsByName(ingredientDto.getName())) {
-            throw new BadRequestException("Ingredient with name '" + ingredientDto.getName() + "' already exists");
+        if (dto.getName() != null && ingredientRepository.existsByName(dto.getName())) {
+            throw new BadRequestException("El ingrediente '" + dto.getName() + "' ya existe");
         }
 
-        Ingredient toSave = IngredientMapper.mapToIngredient(ingredientDto);
-        Ingredient saved = ingredientRepository.save(toSave);
+        Ingredient saved = ingredientRepository.save(IngredientMapper.mapToIngredient(dto));
         return IngredientMapper.mapToIngredientDto(saved);
     }
 
@@ -46,6 +46,20 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<IngredientDto> getIngredientsByType(String typeName) {
+        try {
+            // Convertimos el String (ej: "MEAT") al Enum
+            Ingredient.IngredientType type = Ingredient.IngredientType.valueOf(typeName.toUpperCase());
+            return ingredientRepository.findByType(type).stream()
+                    .map(IngredientMapper::mapToIngredientDto)
+                    .collect(Collectors.toList());
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Tipo de ingrediente inválido: " + typeName);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public IngredientDto getIngredientById(Long id) {
         Ingredient ingredient = ingredientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient", "id", id));
@@ -53,22 +67,20 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public IngredientDto updateIngredient(Long id, IngredientDto ingredientDto) {
-        if (ingredientDto == null) throw new BadRequestException("ingredientDto cannot be null");
-
+    public IngredientDto updateIngredient(Long id, IngredientDto dto) {
         Ingredient existing = ingredientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient", "id", id));
 
-        String newName = ingredientDto.getName();
-        if (newName != null && !newName.equals(existing.getName())) {
-            if (ingredientRepository.existsByName(newName)) {
-                throw new BadRequestException("Ingredient with name '" + newName + "' already exists");
+        if (dto.getName() != null && !dto.getName().equals(existing.getName())) {
+            if (ingredientRepository.existsByName(dto.getName())) {
+                throw new BadRequestException("Nombre ya existe: " + dto.getName());
             }
-            existing.setName(newName);
+            existing.setName(dto.getName());
         }
 
-        if (ingredientDto.getCost() != null) existing.setCost(ingredientDto.getCost());
-        if (ingredientDto.getStock() != null) existing.setStock(ingredientDto.getStock());
+        if (dto.getCost() != null) existing.setCost(dto.getCost());
+        if (dto.getStock() != null) existing.setStock(dto.getStock());
+        if (dto.getType() != null) existing.setType(dto.getType()); // Actualizar tipo
 
         Ingredient saved = ingredientRepository.save(existing);
         return IngredientMapper.mapToIngredientDto(saved);
@@ -79,9 +91,9 @@ public class IngredientServiceImpl implements IngredientService {
         Ingredient existing = ingredientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient", "id", id));
 
+        // Limpiar relaciones antes de borrar para evitar errores de FK
         if (existing.getCreations() != null) {
             existing.getCreations().forEach(c -> c.getIngredients().remove(existing));
-            existing.getCreations().clear();
         }
 
         ingredientRepository.delete(existing);

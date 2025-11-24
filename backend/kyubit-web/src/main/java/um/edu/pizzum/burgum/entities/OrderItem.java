@@ -1,17 +1,13 @@
 package um.edu.pizzum.burgum.entities;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*; // Importa todo
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_items")
-@Data
+@Getter // Usa Getter y Setter en lugar de @Data para tener control
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -22,6 +18,8 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id")
+    @ToString.Exclude         // <--- IMPORTANTE: Rompe el ciclo en logs
+    @EqualsAndHashCode.Include// <--- IMPORTANTE: Rompe el ciclo en comparaciones
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

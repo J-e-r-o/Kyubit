@@ -35,4 +35,28 @@ public class Ingredient {
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "ingredients", fetch = FetchType.LAZY)
     private Set<Creation> creations = new HashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    private IngredientType type;
+
+
+    public enum IngredientType {
+        // Pizza
+        SIZE,           // <--- NUEVO: Individual, Mediana, Familiar
+        PIZZA_BASE,     // Masas (Napolitana, Integral)
+
+        // Burger
+        BREAD,          // Panes
+        MEAT,           // Carnes
+
+        // Comunes
+        CHEESE,
+        SAUCE,
+        VEGETABLE,
+        OTHER
+    }
+
+
 }
+
+

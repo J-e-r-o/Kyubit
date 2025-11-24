@@ -3,7 +3,6 @@ package um.edu.pizzum.burgum.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,8 @@ import java.util.List;
 @Builder
 @Data
 public class Order {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -29,8 +29,13 @@ public class Order {
     private LocalDateTime createdAt;
     private String status;
 
+    // --- SOLUCIÓN AQUÍ ---
+    // Agregamos @Builder.Default para que el Builder respete el "new ArrayList<>()"
+    @Builder.Default
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "delivery_address_id")
+    private Address deliveryAddress;
 }
-
-

@@ -1,4 +1,9 @@
 package um.edu.pizzum.burgum.dto;
 
-public class ConfirmOrderRquest {
+import lombok.Data;
+
+@Data
+public class ConfirmOrderRequest {
+    private Long addressId;
+    private Long paymentMethodId;
 }

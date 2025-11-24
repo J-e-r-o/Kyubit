@@ -13,68 +13,83 @@ import java.util.stream.Collectors;
 
 public class CreationMapper {
 
+    /**
+     * Convierte la Entidad (BD) al DTO (Frontend)
+     */
+    public static CreationDto mapToCreationDto(Creation entity) {
+        if (entity == null) {
+            return null;
+        }
 
+        // Extraer IDs de los ingredientes para enviarlos al front
+        Set<Long> ingredientIds = (entity.getIngredients() != null)
+                ? entity.getIngredients().stream().map(Ingredient::getId).collect(Collectors.toSet())
+                : Collections.emptySet();
+
+        return CreationDto.builder()
+                .id(entity.getId())
+                .userId(entity.getUser() != null ? entity.getUser().getId() : null)
+                .name(entity.getName())
+                .productType(entity.getProductType()) // PIZZA o BURGER
+
+                // Campos Base (Pizza y Burger comparten crust/pan)
+                .size(entity.getSize())
+                .crust(entity.getCrust())
+                .sauce(entity.getSauce())
+                .cheese(entity.getCheese())
+
+                // Campos Específicos de Burger
+                .meatCount(entity.getMeatCount())
+                .meatType(entity.getMeatType())
+
+                // Colección de IDs
+                .ingredientIds(ingredientIds)
+                .build();
+    }
+
+    /**
+     * Convierte el DTO (Frontend) a la Entidad (BD)
+     * Nota: Los ingredientes se resuelven en el Servicio, aquí solo inicializamos el Set vacío.
+     */
     public static Creation mapToCreation(CreationDto dto) {
-        if (dto == null) return null;
+        if (dto == null) {
+            return null;
+        }
 
-        User userPlaceholder = (dto.getUserId() != null)
-                ? User.builder().id(dto.getUserId()).build()
-                : null;
-
-        Set<Ingredient> ingredientsPlaceholder = (dto.getIngredientIds() != null)
-                ? dto.getIngredientIds().stream()
-                .filter(id -> id != null)
-                .map(id -> Ingredient.builder().id(id).build())
-                .collect(Collectors.toSet())
-                : new HashSet<>();
+        // Placeholder para el usuario (El servicio buscará el real)
+        User userPlaceholder = null;
+        if (dto.getUserId() != null) {
+            userPlaceholder = User.builder().id(dto.getUserId()).build();
+        }
 
         return Creation.builder()
                 .id(dto.getId())
                 .user(userPlaceholder)
                 .name(dto.getName())
                 .productType(dto.getProductType())
-                .ingredients(ingredientsPlaceholder)
-                .orderItems(Collections.emptyList())
+
+                // Campos Base
+                .size(dto.getSize())
+                .crust(dto.getCrust())
+                .sauce(dto.getSauce())
+                .cheese(dto.getCheese())
+
+                // Campos Burger
+                .meatCount(dto.getMeatCount())
+                .meatType(dto.getMeatType())
+
+                // Inicializamos la lista de ingredientes vacía para evitar NullPointer
+                // (El Service se encarga de buscar los Ingredients por ID y llenarla)
+                .ingredients(new HashSet<>())
                 .build();
     }
 
-    /**
-     * Entidad -> DTO.
-     */
-    public static CreationDto mapToCreationDto(Creation creation) {
-        if (creation == null) return null;
+    // --- Métodos para Listas ---
 
-        Long userId = (creation.getUser() != null) ? creation.getUser().getId() : null;
-
-        Set<Long> ingredientIds = (creation.getIngredients() != null)
-                ? creation.getIngredients().stream()
-                .filter(i -> i != null && i.getId() != null)
-                .map(Ingredient::getId)
-                .collect(Collectors.toSet())
-                : Collections.emptySet();
-
-        return CreationDto.builder()
-                .id(creation.getId())
-                .name(creation.getName())
-                .productType(creation.getProductType())
-                .userId(userId)
-                .ingredientIds(ingredientIds)
-                .build();
-    }
-
-    public static List<CreationDto> mapToDtoList(List<Creation> entities) {
+    public static List<CreationDto> mapToCreationDtoList(List<Creation> entities) {
         if (entities == null) return Collections.emptyList();
         return entities.stream()
                 .map(CreationMapper::mapToCreationDto)
                 .collect(Collectors.toList());
     }
-
-    public static List<Creation> mapToEntityList(List<CreationDto> dtos) {
-        if (dtos == null) return Collections.emptyList();
-        return dtos.stream()
-                .map(CreationMapper::mapToCreation)
-                .collect(Collectors.toList());
-    }
 }
-
-

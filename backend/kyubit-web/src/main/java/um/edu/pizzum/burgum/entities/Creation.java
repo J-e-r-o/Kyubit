@@ -2,49 +2,41 @@ package um.edu.pizzum.burgum.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "creations")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor @Builder
 public class Creation {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
-    private String name;
+    private String name; // Ej: "Mega Burger"
+    private String productType; // "PIZZA" o "BURGER"
 
-    @Column
-    private String productType; // ej. "hamburger", "pizza", etc.
+    // --- CAMPOS COMPARTIDOS O DE PIZZA ---
+    private String size;   // Individual, Mediana...
+    private String crust;  // Masa / Pan
+    private String sauce;  // Salsa (Pizza) o Aderezo base (Burger)
+    private String cheese;
 
+    // --- CAMPOS NUEVOS PARA HAMBURGUESA ---
+    private Integer meatCount; // Cantidad de carnes (Max 3)
+    private String meatType;   // Vaca, Pollo, Lentejas...
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    // Toppings (Sirve para ambos: Aceitunas en pizza / Bacon en burger)
+    @ManyToMany
     @JoinTable(
-            name = "creation_ingredient",
+            name = "creation_ingredients",
             joinColumns = @JoinColumn(name = "creation_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private Set<Ingredient> ingredients = new HashSet<>();
-
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "creation")
-    private List<OrderItem> orderItems = new ArrayList<>();
 }
