@@ -8,6 +8,8 @@ import um.edu.pizzum.burgum.dto.ConfirmOrderRequest;
 import um.edu.pizzum.burgum.dto.OrderDto;
 import um.edu.pizzum.burgum.services.OrderService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
@@ -38,5 +40,10 @@ public class OrderController {
 
         OrderDto confirmedOrder = orderService.confirmOrder(id, request);
         return ResponseEntity.ok(confirmedOrder);
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<OrderDto>> getHistory(@RequestParam Long userId) {
+        return ResponseEntity.ok(orderService.getUserOrderHistory(userId));
     }
 }

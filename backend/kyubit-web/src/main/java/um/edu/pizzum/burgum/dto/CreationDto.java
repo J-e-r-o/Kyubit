@@ -30,4 +30,7 @@ public class CreationDto {
 
     // --- Lista de IDs de Ingredientes ---
     private Set<Long> ingredientIds;
+
+    private String alias;      // <--- NUEVO
+    private Boolean isFavorite; // <--- NUEVO
 }

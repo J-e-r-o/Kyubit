@@ -1,71 +1,64 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import FotoPerfil from '../assets/FotoPerfil.webp';
-import FotoPizza from '../assets/prueba7.png';
-import FotoBurguer from '../assets/prueba5.png'
-import HomePageNav from '../components/HomePageNav';
+import React from "react";
+import { Link } from "react-router-dom";
+import FotoPizza from "../assets/prueba7.png";
+import FotoBurguer from "../assets/prueba5.png";
+import HomePageNav from "../components/HomePageNav";
 
 const PestañaCreacion = () => {
+  const SectionCard = ({ img, title, desc, to, btnLabel }) => (
+    <div className="relative flex flex-col items-center justify-center text-white overflow-hidden group transition-all duration-700 ease-out">
+      <img
+        src={img}
+        className="absolute inset-0 w-full h-full object-cover object-center blur-sm group-hover:blur-0 scale-100 group-hover:scale-110 transition-all duration-700 ease-out z-0"
+      />
 
-    return(
-        <div className="min-h-screen bg-neutral-900">
-      {/* Barra superior ACA CAMBIE LA DE TRIVE, ES LO MISMO PERO CON UNOS LOGUITOS MAS */}
+      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-500 z-[1]"></div>
+
+      {/* Text */}
+      <div className="relative z-10 text-center transition-all duration-500 group-hover:opacity-0 group-hover:translate-y-4 px-10">
+        <h2 className="text-5xl font-extrabold mb-6 drop-shadow-xl tracking-tight">{title}</h2>
+        <p className="text-xl font-medium opacity-90 leading-relaxed">{desc}</p>
+      </div>
+
+      {/* Button */}
+      <div className="relative z-10 flex flex-col items-center justify-center text-white mt-6">
+        <Link
+          to={to}
+          className="px-8 py-3 bg-orange-500 text-white font-semibold rounded-2xl shadow-md hover:bg-orange-600 hover:shadow-xl hover:scale-110 transition-all"
+        >
+          {btnLabel}
+        </Link>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-neutral-950 text-white">
+      {/* Navigation */}
       <HomePageNav />
 
+      {/* Grid */}
+      <main className="grid grid-cols-1 md:grid-cols-2 min-h-[calc(100vh-64px)] relative overflow-hidden">
+        {/* Divider */}
+        <div className="absolute inset-y-0 left-1/2 w-12 -translate-x-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent z-20 pointer-events-none hidden md:block"></div>
 
-      {/* Contenido principal dividido en dos mitades */}
-      <main className="grid grid-cols-2 min-h-[calc(100vh-64px)] relative overflow-hidden m-0 p-0">
-          <div className="absolute inset-y-0 left-1/2 w-10 -translate-x-1/2 bg-gradient-to-r from-transparent via-black/20 to-transparent z-20 pointer-events-none"></div>
-            <div className="relative flex flex-col items-center justify-center text-white overflow-hidden group transition-all duration-500 ease-out">
-              <img
-                src={FotoPizza}
-                className="absolute inset-0 w-full h-full object-cover object-center blur-sm group-hover:blur-0 scale-100 group-hover:scale-110 transition-all duration-700 ease-out z-0"
-              />
+        {/* Pizza */}
+        <SectionCard
+          img={FotoPizza}
+          title="Crea tu Pizza"
+          desc="Diseña la pizza perfecta eligiendo masa, ingredientes y estilo."
+          btnLabel="Crear Pizza"
+          to="/creacionPizza"
+        />
 
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500 z-[1]"></div>
-
-              {/* Contenido que desaparece al hacer hover */}
-              <div className="relative z-10 text-center transition-all duration-500 group-hover:opacity-0 group-hover:translate-y-4">
-                <h2 className="text-4xl font-bold mb-6">Crea tu Pizza</h2>
-                <p className="text-xl font-semibold mb-8 text-center px-10">
-                  Diseña tu pizza perfecta eligiendo ingredientes, tamaño y estilo.
-                </p>
-              </div>
-              <div className='relative z-10 flex flex-col items-center justify-center text-white '>
-                <Link
-                  to="/creacionPizza"
-                  className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 hover:scale-105 hover:shadow-lg transition-all"
-                >
-                  Crear Pizza
-                </Link>
-              </div>
-            </div>
-
-
-          {/* Mitad derecha - Hamburguesa */}
-          <div className="relative flex flex-col items-center justify-center text-white overflow-hidden group transition-all duration-500 ease-out">
-              <img
-                src={FotoBurguer}
-                className="absolute inset-0 w-full h-full object-cover object-center blur-sm group-hover:blur-0 scale-100 group-hover:scale-110 transition-all duration-700 ease-out z-0"
-              />
-
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500 z-[1]"></div>
-
-              <div className="relative z-10 text-center transition-all duration-500 group-hover:opacity-0 group-hover:translate-y-4">
-                <h2 className="text-4xl font-bold mb-6">Crea tu Hamburguesa</h2>
-                <p className="text-xl font-semibold mb-8 text-center px-10">
-                  Personaliza tu hamburguesa ideal con tus ingredientes favoritos.
-                </p>
-              </div>
-              <div className='relative z-10 flex flex-col items-center justify-center text-white'>
-                <Link
-                  to="/creacionHamburguesa"
-                  className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 hover:scale-105 hover:shadow-lg transition-all"
-                >
-                  Crear Hambuguesa
-                </Link>
-              </div>
-            </div>
+        {/* Burger */}
+        <SectionCard
+          img={FotoBurguer}
+          title="Crea tu Hamburguesa"
+          desc="Personaliza tu hamburguesa ideal con tus ingredientes favoritos."
+          btnLabel="Crear Hamburguesa"
+          to="/creacionHamburguesa"
+        />
       </main>
     </div>
   );

@@ -20,6 +20,7 @@ const CreationPage = () => {
   const [sauce, setSauce] = useState("");
   const [cheese, setCheese] = useState("");
   const [selectedIngredientIds, setSelectedIngredientIds] = useState([]);
+  const [customName, setCustomName] = useState(""); // Estado para el nombre de favorito
 
   useEffect(() => {
     api.get("/ingredients")
@@ -66,10 +67,12 @@ const CreationPage = () => {
     );
   };
 
+  // Validación base
+  const isValid = size && crust && sauce && cheese;
+
   const handleAddToCart = async () => {
     if (!user) return navigate("/login");
-    if (!size || !crust || !sauce || !cheese)
-      return alert("Completa la configuración base");
+    if (!isValid) return alert("Completa la configuración base");
 
     const payload = {
       userId: user.id,
@@ -96,6 +99,34 @@ const CreationPage = () => {
     }
   };
 
+  const handleSaveFavorite = async () => {
+    if (!user) return navigate("/login");
+    if (!isValid) return alert("Completa la pizza primero");
+    if (!customName.trim()) return alert("Ponle un nombre a tu creación para guardarla");
+
+    const payload = {
+      userId: user.id,
+      name: `Pizza ${size} - ${crust}`,
+      alias: customName,
+      productType: "PIZZA",
+      isFavorite: true,
+      size,
+      crust,
+      sauce,
+      cheese,
+      ingredientIds: selectedIngredientIds
+    };
+
+    try {
+      await api.post("/creations", payload); // Guardar solo creación
+      alert("¡Guardada en Favoritos! ❤️");
+      
+    } catch (error) {
+      console.error(error);
+      alert("Error al guardar favorito");
+    }
+  };
+
   const renderOptions = (options) =>
     options.map((opt) => (
       <option key={opt.id} value={opt.name}>
@@ -111,6 +142,7 @@ const CreationPage = () => {
       <div className="fixed inset-0 -z-10">
         <img
           src={FotoPizza}
+          alt="Fondo Pizza"
           className="w-full h-full object-cover blur-sm scale-110 opacity-100"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80"></div>
@@ -118,9 +150,8 @@ const CreationPage = () => {
 
       <div className="relative z-10 container mx-auto px-4 py-12 max-w-6xl flex flex-col lg:flex-row gap-8">
 
-        {/* IZQUIERDA */}
+        {/* IZQUIERDA - CONFIGURACIÓN */}
         <div className="flex-1 w-full">
-
           <div className="mb-8 text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
               Arma tu <span className="text-orange-500">Pizza</span>
@@ -129,8 +160,8 @@ const CreationPage = () => {
           </div>
 
           <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 animate-fade-in-up">
-
-            {/* Paso 1 */}
+            
+            {/* SECCIÓN 1: BASE */}
             <section className="mb-8">
               <div className="flex items-center mb-6">
                 <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold mr-3">1</div>
@@ -138,65 +169,45 @@ const CreationPage = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                {/* Tamaño */}
+                {/* Selects... (Iguales que antes) */}
                 <div>
-                  <label className="block text-sm font-bold text-gray-600 mb-2 uppercase ">Tamaño</label>
-                  <select
-                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none text-black"
-                    value={size}
-                    onChange={(e) => setSize(e.target.value)}
-                  >
+                  <label className="block text-sm font-bold text-gray-600 mb-2 uppercase">Tamaño</label>
+                  <select className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-black focus:ring-2 focus:ring-orange-500 outline-none"
+                    value={size} onChange={(e) => setSize(e.target.value)}>
                     <option value="">Seleccione...</option>
                     {renderOptions(sizesOptions)}
                   </select>
                 </div>
-
-                {/* Masa */}
                 <div>
                   <label className="block text-sm font-bold text-gray-600 mb-2 uppercase">Masa</label>
-                  <select
-                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none text-black"
-                    value={crust}
-                    onChange={(e) => setCrust(e.target.value)}
-                  >
+                  <select className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-black focus:ring-2 focus:ring-orange-500 outline-none"
+                    value={crust} onChange={(e) => setCrust(e.target.value)}>
                     <option value="">Seleccione...</option>
                     {renderOptions(doughOptions)}
                   </select>
                 </div>
-
-                {/* Salsa */}
                 <div>
                   <label className="block text-sm font-bold text-gray-600 mb-2 uppercase">Salsa</label>
-                  <select
-                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none text-black"
-                    value={sauce}
-                    onChange={(e) => setSauce(e.target.value)}
-                  >
+                  <select className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-black focus:ring-2 focus:ring-orange-500 outline-none"
+                    value={sauce} onChange={(e) => setSauce(e.target.value)}>
                     <option value="">Seleccione...</option>
                     {renderOptions(sauceOptions)}
                   </select>
                 </div>
-
-                {/* Queso */}
                 <div>
                   <label className="block text-sm font-bold text-gray-600 mb-2 uppercase">Queso</label>
-                  <select
-                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none text-black"
-                    value={cheese}
-                    onChange={(e) => setCheese(e.target.value)}
-                  >
+                  <select className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-black focus:ring-2 focus:ring-orange-500 outline-none"
+                    value={cheese} onChange={(e) => setCheese(e.target.value)}>
                     <option value="">Seleccione...</option>
                     {renderOptions(cheeseOptions)}
                   </select>
                 </div>
-
               </div>
             </section>
 
             <hr className="border-gray-200 mb-8" />
 
-            {/* Paso 2 */}
+            {/* SECCIÓN 2: TOPPINGS */}
             <section>
               <div className="flex items-center mb-6">
                 <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold mr-3">2</div>
@@ -208,17 +219,8 @@ const CreationPage = () => {
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {toppingOptions.map((ing) => (
-                    <label
-                      key={ing.id}
-                      className={`
-                        flex items-center space-x-2 p-3 rounded-xl border cursor-pointer transition-all text-black
-                        ${
-                          selectedIngredientIds.includes(ing.id)
-                            ? "border-orange-500 bg-orange-50 shadow-sm"
-                            : "border-gray-200 hover:border-gray-300"
-                        }
-                      `}
-                    >
+                    <label key={ing.id} className={`flex items-center space-x-2 p-3 rounded-xl border cursor-pointer transition-all text-black
+                        ${selectedIngredientIds.includes(ing.id) ? "border-orange-500 bg-orange-50 shadow-sm" : "border-gray-200 hover:border-gray-300"}`}>
                       <input
                         type="checkbox"
                         className="accent-orange-500 w-4 h-4"
@@ -236,61 +238,76 @@ const CreationPage = () => {
           </div>
         </div>
 
-        {/* DERECHA — RESUMEN */}
+        {/* DERECHA — RESUMEN Y ACCIONES */}
         <div className="lg:w-1/3 w-full lg:sticky lg:top-24">
-          <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 border-t-8 border-orange-500">
+          <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 border-t-8 border-orange-500 text-gray-800">
 
-            <h3 className="text-2xl font-bold text-gray-800 mb-6">Tu Pizza</h3>
+            <h3 className="text-2xl font-bold mb-6">Tu Pizza</h3>
 
-            <div className="space-y-4 mb-8 text-gray-600 text-sm">
+            <div className="space-y-4 mb-8 text-sm">
               <div className="flex justify-between border-b pb-3">
                 <span>Tamaño ({size || "-"})</span>
                 <span>${sizesOptions.find(i=>i.name===size)?.cost || 0}</span>
               </div>
-
               <div className="flex justify-between border-b pb-3">
                 <span>Masa ({crust || "-"})</span>
                 <span>${doughOptions.find(i=>i.name===crust)?.cost || 0}</span>
               </div>
-
               <div className="flex justify-between border-b pb-3">
                 <span>Salsa ({sauce || "-"})</span>
                 <span>${sauceOptions.find(i=>i.name===sauce)?.cost || 0}</span>
               </div>
-
               <div className="flex justify-between border-b pb-3">
                 <span>Queso ({cheese || "-"})</span>
                 <span>${cheeseOptions.find(i=>i.name===cheese)?.cost || 0}</span>
               </div>
-
               {selectedIngredientIds.length > 0 && (
                 <div className="flex justify-between border-b pb-3 text-orange-600 font-semibold">
                   <span>Extras ({selectedIngredientIds.length})</span>
-                  <span>
-                    +$
-                    {toppingOptions
-                      .filter(i => selectedIngredientIds.includes(i.id))
-                      .reduce((s, i) => s + i.cost, 0)}
-                  </span>
+                  <span>+${toppingOptions.filter(i => selectedIngredientIds.includes(i.id)).reduce((s, i) => s + i.cost, 0)}</span>
                 </div>
               )}
             </div>
 
-            <div className="text-4xl font-bold text-orange-600 mb-6">
+            <div className="text-4xl font-bold text-orange-600 mb-6 text-center">
               ${currentPrice}
             </div>
 
-            <button
-              onClick={handleAddToCart}
-              className="w-full py-4 bg-orange-600 text-white rounded-xl font-bold hover:bg-orange-700 transition"
-            >
-              Agregar
-            </button>
+            <div className="space-y-3">
+                {/* Input Nombre Favorito */}
+                <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Nombre tu creación (Opcional)</label>
+                    <input 
+                        type="text" 
+                        placeholder="Ej: La Mata Hambre"
+                        className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-orange-500 outline-none bg-gray-50"
+                        value={customName}
+                        onChange={(e) => setCustomName(e.target.value)}
+                    />
+                </div>
 
-            <Link
-              to="/creator"
-              className="block text-center mt-6 text-gray-400 hover:text-orange-500 text-sm"
-            >
+                {/* Botón Agregar al Pedido */}
+                <button
+                  onClick={handleAddToCart}
+                  disabled={!isValid}
+                  className={`w-full py-3 rounded-xl font-bold text-white transition shadow-lg
+                    ${isValid ? "bg-orange-600 hover:bg-orange-700" : "bg-gray-400 cursor-not-allowed"}`}
+                >
+                  Agregar al Pedido
+                </button>
+
+                {/* Botón Guardar Favorito */}
+                <button
+                  onClick={handleSaveFavorite}
+                  disabled={!isValid || !customName}
+                  className={`w-full py-3 rounded-xl font-bold border-2 transition
+                    ${isValid && customName ? "border-orange-500 text-orange-600 hover:bg-orange-50" : "border-gray-300 text-gray-400 cursor-not-allowed"}`}
+                >
+                  ❤️ Guardar Favorita
+                </button>
+            </div>
+
+            <Link to="/creator" className="block text-center mt-6 text-gray-400 hover:text-orange-500 text-sm">
               ← Cancelar y volver
             </Link>
           </div>

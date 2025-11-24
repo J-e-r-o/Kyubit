@@ -2,9 +2,11 @@ package um.edu.pizzum.burgum.services.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import um.edu.pizzum.burgum.repository.UserRepository;
 import um.edu.pizzum.burgum.entities.User;
+
 
 @Service
 @RequiredArgsConstructor
@@ -17,4 +19,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
+
+
 }

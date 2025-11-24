@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -27,41 +27,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(withDefaults()) // Aplica el Bean de CORS de AppConfig
+                .cors(withDefaults())
                 .csrf(crsf -> crsf.disable())
-                .headers(headers ->
-                        headers.frameOptions(frame -> frame.disable()) // Permite la consola H2
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+                .authorizeHttpRequests(auth -> auth
+                        // 1. RUTAS PÚBLICAS
+                        .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/external/**")).permitAll()
+
+                        // 2. RUTAS DE ADMIN (Backoffice) - Solo ROLE_ADMIN
+                        .requestMatchers(new AntPathRequestMatcher("/api/admin/**")).hasAuthority("ROLE_ADMIN")
+
+                        // 3. RUTAS DE FUNCIONARIO/USUARIO (Acciones sensibles)
+                        // Aquí podrías restringir DELETE a solo ADMIN si quisieras, o dejarlo a autenticados
+                        .requestMatchers(new AntPathRequestMatcher("/api/orders/items/**", "DELETE")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/api/ingredients/**", "DELETE")).hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/ingredients/**", "POST")).hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/ingredients/**", "PUT")).hasAuthority("ROLE_ADMIN")
+
+                        // 4. RUTAS GENERALES AUTENTICADAS
+                        // Esto cubre /api/users/**, /api/orders/** (GET/POST), etc.
+                        .anyRequest().authenticated()
                 )
-                .authorizeHttpRequests(authRequest ->
-                        authRequest
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/h2-console/**").permitAll() // Permite la consola H2
-                                .requestMatchers(HttpMethod.DELETE, "/api/orders/items/**").permitAll()
-                                .anyRequest().authenticated()
-
-                )
-                .sessionManagement(sessionManager ->
-                        sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
-    // --- ELIMINADO ---
-    // Todos estos Beans ya están definidos en AppConfig.java
-    // No necesitamos definirlos de nuevo aquí.
-
-    // @Bean
-    // public DaoAuthenticationProvider daoAuthenticationProvider() { ... }
-
-    // @Bean
-    // public PasswordEncoder passwordEncoder() { ... }
-
-    // @Bean
-    // public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { ... }
 }
 

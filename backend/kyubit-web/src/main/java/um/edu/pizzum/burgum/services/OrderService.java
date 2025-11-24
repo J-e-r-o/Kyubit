@@ -5,6 +5,8 @@ import um.edu.pizzum.burgum.dto.AddItemRequest;
 import um.edu.pizzum.burgum.dto.ConfirmOrderRequest;
 import um.edu.pizzum.burgum.dto.OrderDto;
 
+import java.util.List;
+
 public interface OrderService {
     OrderDto addItemToOrder(AddItemRequest request);
     OrderDto getCartByUserId(Long userId);
@@ -12,6 +14,6 @@ public interface OrderService {
 
     @Transactional
     OrderDto confirmOrder(Long orderId, ConfirmOrderRequest request);
-
+    List<OrderDto> getUserOrderHistory(Long userId);
 
 }

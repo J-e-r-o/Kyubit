@@ -18,8 +18,7 @@ import java.util.function.Function;
 public class JwtService {
 
     private final SecretKey secretKey;
-    private final long jwtExpiration = 1000 * 60 * 24; // 24 horas
-
+    private final long jwtExpiration = 1000 * 60 * 60 * 24;
     // Usamos inyección por constructor para la clave, es más limpio
     public JwtService(@Value("${application.security.jwt.secret-key}") String secretKeyValue) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKeyValue);

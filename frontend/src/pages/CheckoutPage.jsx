@@ -38,7 +38,7 @@ const CheckoutPage = () => {
       return;
     }
 
-    // A. Cargar Direcciones del Usuario Local
+    // A. Cargar Direcciones
     if (user.addresses && user.addresses.length > 0) {
         const mappedAddresses = user.addresses.map(addr => ({
             id: addr.id,
@@ -46,11 +46,10 @@ const CheckoutPage = () => {
             details: `${addr.city}, CP: ${addr.zipCode}`
         }));
         setAddresses(mappedAddresses);
-        // Si no hay seleccionada, seleccionar la primera
         if (!selectedAddress) setSelectedAddress(mappedAddresses[0].id);
     }
 
-    // B. Cargar Pagos del Usuario Local
+    // B. Cargar Pagos
     if (user.payments && user.payments.length > 0) {
         const mappedPayments = user.payments.map(pay => ({
             id: pay.id,
@@ -61,7 +60,7 @@ const CheckoutPage = () => {
         if (!selectedPayment) setSelectedPayment(mappedPayments[0].id);
     }
 
-    // C. Cargar el Carrito del Backend
+    // C. Cargar Carrito
     fetchOrder();
   }, [user, navigate]);
 
@@ -90,59 +89,21 @@ const CheckoutPage = () => {
     }
   };
 
-  // --- LOGICA DE ELIMINAR ITEM ---
+  // --- ELIMINAR ITEM ---
   const handleRemoveItem = async (itemId) => {
     if(!window.confirm("¿Seguro que quieres eliminar este ítem?")) return;
 
     try {
         await api.delete(`/orders/items/${itemId}`);
-        await fetchOrder(); // Recargar carrito
+        await fetchOrder(); 
     } catch (error) {
         console.error("Error eliminando item:", error);
         alert("No se pudo eliminar el ítem");
     }
   };
 
-  // --- LOGICA AGREGAR DIRECCIÓN (CONEXIÓN REAL) ---
+  // --- AGREGAR DIRECCIÓN (CORREGIDO) ---
   const handleAddAddress = async (newAddressData) => {
-
-    if (!selectedAddress) return alert("Selecciona una dirección de envío");
-      if (!selectedPayment) return alert("Selecciona un método de pago");
-      
-      // Feedback visual de carga
-      const originalText = document.getElementById('btn-confirm').innerText;
-      document.getElementById('btn-confirm').innerText = "Procesando pago...";
-      document.getElementById('btn-confirm').disabled = true;
-
-      try {
-          const payload = {
-              addressId: selectedAddress,
-              paymentMethodId: selectedPayment
-          };
-
-          await api.post(`/orders/${orderId}/confirm`, payload);
-
-          // ÉXITO
-          alert("¡Pago Aprobado! Tu pedido ha sido confirmado.");
-          navigate('/perfil'); // O donde quieras mandar al usuario
-          
-      } catch (error) {
-          // ERROR (Pago rechazado)
-          console.error("Error al confirmar:", error);
-          
-          // Extraemos el mensaje del backend si existe
-          const serverMessage = error.response?.data?.message || error.response?.data || "Error desconocido";
-          
-          alert("❌ PAGO RECHAZADO\n\nEl banco no autorizó la transacción: " + serverMessage + "\n\nPor favor intenta con otra tarjeta.");
-      
-      } finally {
-          // Restaurar botón
-          if(document.getElementById('btn-confirm')) {
-             document.getElementById('btn-confirm').innerText = originalText;
-             document.getElementById('btn-confirm').disabled = false;
-          }
-      }
-
     try {
         // 1. Guardar en Backend
         const response = await api.post(`/users/${user.id}/addresses`, newAddressData);
@@ -158,10 +119,10 @@ const CheckoutPage = () => {
         setSelectedAddress(savedAddress.id);
         setIsAddressModalOpen(false);
 
-        // 3. Actualizar LocalStorage (Para persistencia al recargar)
+        // 3. Actualizar LocalStorage
         const updatedUser = { ...user, addresses: [...(user.addresses || []), savedAddress] };
         localStorage.setItem("user", JSON.stringify(updatedUser));
-        setUser(updatedUser); // Actualizar estado user
+        setUser(updatedUser); 
 
     } catch (error) {
         console.error("Error guardando dirección", error);
@@ -169,14 +130,12 @@ const CheckoutPage = () => {
     }
   };
 
-  // --- LOGICA AGREGAR PAGO (CONEXIÓN REAL) ---
+  // --- AGREGAR PAGO ---
   const handleAddPayment = async (newPaymentData) => {
     try {
-        // 1. Guardar en Backend
         const response = await api.post(`/users/${user.id}/payments`, newPaymentData);
         const savedPayment = response.data;
 
-        // 2. Actualizar UI Local
         const visualPayment = {
             id: savedPayment.id,
             title: `${savedPayment.cardType} •••• ${savedPayment.lastFourDigits}`,
@@ -186,7 +145,6 @@ const CheckoutPage = () => {
         setSelectedPayment(savedPayment.id);
         setIsPaymentModalOpen(false);
 
-        // 3. Actualizar LocalStorage
         const updatedUser = { ...user, payments: [...(user.payments || []), savedPayment] };
         localStorage.setItem("user", JSON.stringify(updatedUser));
         setUser(updatedUser);
@@ -197,12 +155,41 @@ const CheckoutPage = () => {
     }
   };
 
-  const handlePlaceOrder = () => {
-      if (!selectedAddress) return alert("Selecciona una dirección");
+  // --- CONFIRMAR PEDIDO (Lógica Completa) ---
+  const handlePlaceOrder = async () => {
+      if (!selectedAddress) return alert("Selecciona una dirección de envío");
       if (!selectedPayment) return alert("Selecciona un método de pago");
       
-      alert(`¡Pedido Confirmado!\nOrden ID: ${orderId}\nEnviando a ID: ${selectedAddress}\nPagado con ID: ${selectedPayment}`);
-      // Aquí podrías llamar a api.post('/orders/confirm', ...)
+      // Feedback visual
+      const btn = document.getElementById('btn-confirm');
+      const originalText = btn.innerText;
+      btn.innerText = "Procesando pago...";
+      btn.disabled = true;
+
+      try {
+          const payload = {
+              addressId: selectedAddress,
+              paymentMethodId: selectedPayment
+          };
+
+          // Llamada al Backend (Paso 5)
+          await api.post(`/orders/${orderId}/confirm`, payload);
+
+          // ÉXITO
+          alert("¡Pago Aprobado! Tu pedido ha sido confirmado.");
+          navigate('/homepage'); 
+          
+      } catch (error) {
+          console.error("Error al confirmar:", error);
+          const serverMessage = error.response?.data?.message || "Error desconocido";
+          alert("❌ PAGO RECHAZADO\n\n" + serverMessage + "\n\nPor favor intenta con otra tarjeta.");
+      
+      } finally {
+          if(btn) {
+             btn.innerText = originalText;
+             btn.disabled = false;
+          }
+      }
   };
 
   if (loading) return <div className="p-10 text-center font-bold text-gray-500">Cargando tu experiencia...</div>;
@@ -253,7 +240,6 @@ const CheckoutPage = () => {
                    <p className="text-gray-500">No tienes tarjetas guardadas.</p>
                )}
                
-               {/* Botón de agregar pago que faltaba */}
                <button onClick={() => setIsPaymentModalOpen(true)} className="flex items-center space-x-2 text-brand-primary font-semibold mt-6 hover:underline">
                 <FiPlus /><span>Agregar tarjeta</span>
               </button>

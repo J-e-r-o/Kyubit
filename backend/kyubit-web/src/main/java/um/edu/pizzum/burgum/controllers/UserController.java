@@ -27,4 +27,10 @@ public class UserController {
         PaymentMethodDto savedPayment = userService.addPaymentToUser(userId, paymentDto);
         return ResponseEntity.ok(savedPayment);
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        userService.deleteUserLogical(userId);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -53,4 +53,10 @@ public class CreationController {
         creationService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Endpoint para obtener favoritos
+    @GetMapping("/favorites")
+    public ResponseEntity<List<CreationDto>> getFavorites(@RequestParam Long userId) {
+        return ResponseEntity.ok(creationService.getFavoritesByUserId(userId));
+    }
 }

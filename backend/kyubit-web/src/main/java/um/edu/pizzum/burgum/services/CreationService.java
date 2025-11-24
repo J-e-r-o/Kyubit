@@ -12,4 +12,5 @@ public interface CreationService {
     List<CreationDto> findByUserId(Long userId);
     CreationDto update(Long id, CreationDto dto);
     void delete(Long id);
+    List<CreationDto> getFavoritesByUserId(Long userId);
 }
