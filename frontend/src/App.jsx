@@ -6,7 +6,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import PestañaCreacion from './pages/PestañaCreacion';
-import Perfil from './pages/Perfil';
+
 import CheckoutPage from './pages/CheckoutPage';
 import ProtectedRoute from './components/ProtectedRoute'; 
 import CreationPage from './pages/PizzaCreation';
@@ -18,8 +18,8 @@ import AdminRoute from './components/AdminRoute';
 import AdminIngredientsPage from './pages/AdminIngredientsPage';
 import AdminUsersPage from './pages/AdminUsersPage';
 import ProfilePage from './pages/ProfilePage';
-// Páginas placeholder para que los links no den 404
-
+import AboutUsPage from './pages/AboutUsPage';
+import SoftwallPage from './pages/SoftwallPage';
 
 function App() {
   return (
@@ -30,11 +30,11 @@ function App() {
         {/* --- RUTAS PÚBLICAS --- */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        
+        <Route path="/softwall" element={<SoftwallPage />} />
         {/* Redirección básica si entran a /homepage sin querer */}
         <Route path="/homepage" element={<Navigate to="/" replace />} />
 
-        {/* --- RUTAS PROTEGIDAS (EL "HARD WALL") --- */}
+        {/* --- RUTAS PROTEGIDAS  --- */}
         <Route element={<ProtectedRoute />}>
           
           <Route path="/" element={<HomePage />} />
@@ -44,8 +44,7 @@ function App() {
           
           {/* Rutas de Creación Específicas */}
           <Route path="/creacionPizza" element={<CreationPage/>} />
-          <Route path="/creacionHamburguesa" element={<BurgerCreation/>} /> {/* <--- 2. NUEVA RUTA */}
-
+          <Route path="/creacionHamburguesa" element={<BurgerCreation/>} /> 
           {/* Rutas del Carrito (Alias para evitar errores de navegación) */}
           <Route path="/carrito" element={<CheckoutPage />} />
           <Route path="/checkout" element={<CheckoutPage />} /> {/* Agregado por seguridad si usas /checkout en los navigate() */}
@@ -54,6 +53,7 @@ function App() {
           <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/historial" element={<OrderHistoryPage />} />
           <Route path="/mis-creaciones" element={<MyCreationsPage />} />
+          <Route path="/about" element={<AboutUsPage />} />
           
         </Route>
 

@@ -31,7 +31,7 @@ const MyCreationsPage = () => {
 
   }, [navigate]);
 
-  // --- FUNCIÓN INTELIGENTE DE CÁLCULO DE PRECIO ---
+  // CÁLCULO DE PRECIO 
   const calculateCurrentPrice = (creation) => {
       // Helper para buscar precio por nombre
       const getCostByName = (name) => {
@@ -48,19 +48,14 @@ const MyCreationsPage = () => {
       let baseCost = 0;
 
       if (creation.productType === 'PIZZA') {
-          // Pizza: Tamaño + Masa + Salsa + Queso
           baseCost = getCostByName(creation.size) + 
                      getCostByName(creation.crust) + 
                      getCostByName(creation.sauce) + 
                      getCostByName(creation.cheese);
       } else if (creation.productType === 'BURGER') {
-          // Burger: Pan + (Carne * Cantidad)
-          // Nota: 'crust' guarda el pan, 'meatType' la carne
           const meatPrice = getCostByName(creation.meatType);
-          const bunPrice = getCostByName(creation.crust); // Reusamos campo crust
+          const bunPrice = getCostByName(creation.crust); 
           
-          // Carne extra? (Asumiendo lógica: precio base incluye 1 carne, extras se cobran o se cobra todo unitario)
-          // Usaremos la misma lógica que en BurgerCreation: Suma todo.
           baseCost = bunPrice + (meatPrice * (creation.meatCount || 1));
       }
 
@@ -68,7 +63,6 @@ const MyCreationsPage = () => {
   };
 
   const handleOrderNow = async (creation) => {
-    // 1. Calcular precio actualizado al día de hoy
     const currentPrice = calculateCurrentPrice(creation);
 
     console.log(`Recalculando precio para ${creation.name}: $${currentPrice}`);
@@ -76,10 +70,10 @@ const MyCreationsPage = () => {
     const payload = {
         userId: user.id,
         quantity: 1,
-        unitPrice: currentPrice, // <--- ENVIAMOS EL PRECIO REAL
+        unitPrice: currentPrice, 
         creation: {
             ...creation,
-            id: null, // Nueva instancia para la orden
+            id: null, 
             isFavorite: false 
         }
     };
