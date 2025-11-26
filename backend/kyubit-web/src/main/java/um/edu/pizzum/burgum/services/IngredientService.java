@@ -6,20 +6,14 @@ import java.util.List;
 public interface IngredientService {
 
 
-    //Crear
     IngredientDto createIngredient(IngredientDto ingredientDto);
 
-
-    //Obtiener todos los ingredientes.
     List<IngredientDto> getAllIngredients();
 
-    //Obtiene un ingrediente por su ID.
     IngredientDto getIngredientById(Long id);
 
-    //Actualizar
     IngredientDto updateIngredient(Long id, IngredientDto ingredientDto);
 
-    //Eliminar
     void deleteIngredient(Long id);
 
     List<IngredientDto> getIngredientsByType(String typeName);

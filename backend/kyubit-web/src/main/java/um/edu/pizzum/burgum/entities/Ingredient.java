@@ -25,12 +25,12 @@ public class Ingredient {
     private String name;
 
     @Column(nullable = false)
-    private Integer cost; // si después quieres centavos, cambiar a BigDecimal
+    private Integer cost;
 
     @Column(nullable = false)
     private Integer stock;
 
-    // colecciones excluidas de equals/hashCode y toString para evitar problemas con JPA
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "ingredients", fetch = FetchType.LAZY)
@@ -42,12 +42,12 @@ public class Ingredient {
 
     public enum IngredientType {
         // Pizza
-        SIZE,           // <--- NUEVO: Individual, Mediana, Familiar
-        PIZZA_BASE,     // Masas (Napolitana, Integral)
+        SIZE,
+        PIZZA_BASE,
 
         // Burger
-        BREAD,          // Panes
-        MEAT,           // Carnes
+        BREAD,
+        MEAT,
 
         // Comunes
         CHEESE,

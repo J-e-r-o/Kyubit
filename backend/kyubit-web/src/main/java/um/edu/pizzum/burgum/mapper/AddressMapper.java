@@ -37,10 +37,8 @@ public class AddressMapper {
             return null;
         }
 
-        // 1. Extraer el ID del Usuario (con chequeo de nulidad)
         Long userId = (address.getUser() != null) ? address.getUser().getId() : null;
 
-        // 2. Usar el constructor del DTO
         return new AddressDto(
                 address.getId(),
                 address.getStreet(),

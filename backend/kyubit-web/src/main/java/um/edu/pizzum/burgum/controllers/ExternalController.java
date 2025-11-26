@@ -18,20 +18,14 @@ public class ExternalController {
 
     private final ExternalService externalService;
 
-    /**
-     * Servicio para DGI: Devuelve tickets de venta por fecha.
-     * Ejemplo: GET /api/external/dgi/sales?date=2025-11-23
-     */
+
     @GetMapping("/dgi/sales")
     public ResponseEntity<List<OrderDto>> getDgiSales(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return ResponseEntity.ok(externalService.getSalesByDate(date));
     }
 
-    /**
-     * Servicio para BPS: Devuelve cantidad de funcionarios.
-     * Ejemplo: GET /api/external/bps/employees
-     */
+
     @GetMapping("/bps/employees")
     public Object getBpsEmployees() {
         return ResponseEntity.ok(externalService.getEmployeeCount());

@@ -18,19 +18,19 @@ public class Creation {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String name; // Ej: "Mega Burger"
-    private String productType; // "PIZZA" o "BURGER"
-    private String alias; // Nombre del usuario (ej: "Pizza de los Viernes")
+    private String name;
+    private String productType;
+    private String alias; // Nombre que le da el usuario
 
-    // --- CAMPOS COMPARTIDOS O DE PIZZA ---
-    private String size;   // Individual, Mediana...
-    private String crust;  // Masa / Pan
-    private String sauce;  // Salsa (Pizza) o Aderezo base (Burger)
+
+    private String size;
+    private String crust;
+    private String sauce;
     private String cheese;
 
-    // --- CAMPOS NUEVOS PARA HAMBURGUESA ---
-    private Integer meatCount; // Cantidad de carnes (Max 3)
-    private String meatType;   // Vaca, Pollo, Lentejas...
+
+    private Integer meatCount;
+    private String meatType;
 
     // Toppings (Sirve para ambos: Aceitunas en pizza / Bacon en burger)
     @ManyToMany
@@ -42,5 +42,5 @@ public class Creation {
     private Set<Ingredient> ingredients = new HashSet<>();
 
     @Column(name = "is_favorite")
-    private Boolean isFavorite = false; // Por defecto false
+    private Boolean isFavorite = false;
 }

@@ -18,8 +18,8 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id")
-    @ToString.Exclude         // <--- IMPORTANTE: Rompe el ciclo en logs
-    @EqualsAndHashCode.Include// <--- IMPORTANTE: Rompe el ciclo en comparaciones
+    @ToString.Exclude
+    @EqualsAndHashCode.Include
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -8,9 +8,8 @@ import java.util.List;
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 
     boolean existsByName(String name);
-    // Buscar por tipo
+
     List<Ingredient> findByType(Ingredient.IngredientType type);
 
-    // Buscar por lista de tipos 
     List<Ingredient> findByTypeIn(List<Ingredient.IngredientType> types);
 }

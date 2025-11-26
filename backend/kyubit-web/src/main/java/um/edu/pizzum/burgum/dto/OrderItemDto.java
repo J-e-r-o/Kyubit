@@ -14,7 +14,7 @@ public class OrderItemDto {
     private Long id;
     private Long orderId;
     private Long creationId;
-    private String creationName; // <--- NUEVO: Para mostrar "Pizza Napolitana" en el carrito
+    private String creationName;
     private Integer quantity;
     private BigDecimal unitPrice;
 }

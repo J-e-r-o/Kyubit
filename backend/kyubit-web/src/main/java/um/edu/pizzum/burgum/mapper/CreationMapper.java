@@ -18,7 +18,7 @@ public class CreationMapper {
             return null;
         }
 
-        // Extraer IDs de los ingredientes para enviarlos al front
+
         Set<Long> ingredientIds = (entity.getIngredients() != null)
                 ? entity.getIngredients().stream().map(Ingredient::getId).collect(Collectors.toSet())
                 : Collections.emptySet();
@@ -27,23 +27,22 @@ public class CreationMapper {
                 .id(entity.getId())
                 .userId(entity.getUser() != null ? entity.getUser().getId() : null)
                 .name(entity.getName())
-                .productType(entity.getProductType()) // PIZZA o BURGER
+                .productType(entity.getProductType())
 
-                .alias(entity.getAlias())           // Mapeamos el nombre personalizado
-                .isFavorite(entity.getIsFavorite()) // Mapeamos el estado de favorito
-                // --------------------------------
+                .alias(entity.getAlias())
+                .isFavorite(entity.getIsFavorite())
 
-                // Campos Base (Pizza y Burger comparten crust/pan)
+
                 .size(entity.getSize())
                 .crust(entity.getCrust())
                 .sauce(entity.getSauce())
                 .cheese(entity.getCheese())
 
-                // Campos Específicos de Burger
+
                 .meatCount(entity.getMeatCount())
                 .meatType(entity.getMeatType())
 
-                // Colección de IDs
+
                 .ingredientIds(ingredientIds)
                 .build();
     }
@@ -53,7 +52,6 @@ public class CreationMapper {
             return null;
         }
 
-        // Placeholder para el usuario
         User userPlaceholder = null;
         if (dto.getUserId() != null) {
             userPlaceholder = User.builder().id(dto.getUserId()).build();
@@ -79,7 +77,6 @@ public class CreationMapper {
                 .meatCount(dto.getMeatCount())
                 .meatType(dto.getMeatType())
 
-                // Inicializamos la lista de ingredientes vacía
                 .ingredients(new HashSet<>())
                 .build();
     }

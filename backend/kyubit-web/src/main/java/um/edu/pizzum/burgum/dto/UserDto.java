@@ -20,10 +20,10 @@ public class UserDto {
     private LocalDate birthdate;
     private User.Role role;
 
-    // Listas de IDs
+
     private List<Long> tokenIds;
     private List<Long> addressIds;
     private List<Long> createdProductIds;
 
-    // ELIMINADO: private Set<Long> favoriteCreationIds;
+
 }

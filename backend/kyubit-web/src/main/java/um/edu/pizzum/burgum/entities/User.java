@@ -42,7 +42,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
-    // --- LISTAS INICIALIZADAS (Para evitar NullPointer) ---
 
     @Builder.Default
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -57,10 +56,9 @@ public class User implements UserDetails {
     private List<Creation> createdProducts = new ArrayList<>();
 
     @Column(name = "is_active", nullable = false)
-    @Builder.Default // Para que al crear sea true por defecto
+    @Builder.Default
     private Boolean isActive = true;
 
-    // --- ¡BORRADO favoriteCreations! Ya no lo usamos ---
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -84,7 +82,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.isActive; // <--- ¡ESTO ES CLAVE!
+        return this.isActive;
     }
 
     public enum Role {

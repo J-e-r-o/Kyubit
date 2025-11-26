@@ -20,11 +20,9 @@ public class OrderItemMapper {
         if (entity.getCreation() != null) {
             creationId = entity.getCreation().getId();
 
-            // 1. Verificamos si tiene un Alias (Nombre del usuario)
             String alias = entity.getCreation().getAlias();
             String techName = entity.getCreation().getName();
 
-            // 2. Si tiene alias y no está vacío, se usa, si no, se usa el nombre tecnico.
             if (alias != null && !alias.trim().isEmpty()) {
                 displayName = alias;
             } else {

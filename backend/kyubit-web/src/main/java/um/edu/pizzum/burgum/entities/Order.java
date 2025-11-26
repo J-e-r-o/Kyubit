@@ -29,8 +29,7 @@ public class Order {
     private LocalDateTime createdAt;
     private String status;
 
-    // --- SOLUCIÓN AQUÍ ---
-    // Agregamos @Builder.Default para que el Builder respete el "new ArrayList<>()"
+
     @Builder.Default
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();

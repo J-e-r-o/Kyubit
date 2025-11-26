@@ -9,7 +9,7 @@ public class RegisterRequestDTO {
     private String lastname;
     private String email;
     private String password;
-    private String birthdate; // El frontend lo envía como String "YYYY-MM-DD"
+    private String birthdate;
     private AddressDto address;
     private PaymentMethodDto payment;
 

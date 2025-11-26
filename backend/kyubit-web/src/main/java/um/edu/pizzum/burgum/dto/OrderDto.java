@@ -18,6 +18,6 @@ public class OrderDto {
     private Long paymentMethodId;
     private LocalDateTime createdAt;
     private String status;
-    private BigDecimal total; // <--- NUEVO: Total calculado por el backend
+    private BigDecimal total;
     private List<OrderItemDto> items;
 }
