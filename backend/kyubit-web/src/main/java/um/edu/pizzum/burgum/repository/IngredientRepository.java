@@ -11,6 +11,6 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     // Buscar por tipo
     List<Ingredient> findByType(Ingredient.IngredientType type);
 
-    // Buscar por lista de tipos (ej: Dame vegetales y quesos)
+    // Buscar por lista de tipos 
     List<Ingredient> findByTypeIn(List<Ingredient.IngredientType> types);
 }

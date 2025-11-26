@@ -13,9 +13,6 @@ import java.util.stream.Collectors;
 
 public class CreationMapper {
 
-    /**
-     * Convierte la Entidad (BD) al DTO (Frontend)
-     */
     public static CreationDto mapToCreationDto(Creation entity) {
         if (entity == null) {
             return null;
@@ -32,7 +29,6 @@ public class CreationMapper {
                 .name(entity.getName())
                 .productType(entity.getProductType()) // PIZZA o BURGER
 
-                // --- CAMPOS NUEVOS (SOLUCIÓN) ---
                 .alias(entity.getAlias())           // Mapeamos el nombre personalizado
                 .isFavorite(entity.getIsFavorite()) // Mapeamos el estado de favorito
                 // --------------------------------
@@ -52,9 +48,6 @@ public class CreationMapper {
                 .build();
     }
 
-    /**
-     * Convierte el DTO (Frontend) a la Entidad (BD)
-     */
     public static Creation mapToCreation(CreationDto dto) {
         if (dto == null) {
             return null;
@@ -72,19 +65,17 @@ public class CreationMapper {
                 .name(dto.getName())
                 .productType(dto.getProductType())
 
-                // --- CAMPOS NUEVOS (SOLUCIÓN) ---
                 .alias(dto.getAlias())
                 // Si viene nulo, asumimos false para evitar problemas en la BD
                 .isFavorite(dto.getIsFavorite() != null ? dto.getIsFavorite() : false)
-                // --------------------------------
 
-                // Campos Base
+
                 .size(dto.getSize())
                 .crust(dto.getCrust())
                 .sauce(dto.getSauce())
                 .cheese(dto.getCheese())
 
-                // Campos Burger
+
                 .meatCount(dto.getMeatCount())
                 .meatType(dto.getMeatType())
 
@@ -93,7 +84,6 @@ public class CreationMapper {
                 .build();
     }
 
-    // --- Métodos para Listas ---
 
     public static List<CreationDto> mapToCreationDtoList(List<Creation> entities) {
         if (entities == null) return Collections.emptyList();

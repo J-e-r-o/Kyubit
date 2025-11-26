@@ -34,7 +34,7 @@ public class IngredientMapper {
                 .name(ingredient.getName())
                 .cost(ingredient.getCost())
                 .stock(ingredient.getStock())
-                .type(ingredient.getType()) // <--- Mapear tipo
+                .type(ingredient.getType())
                 .build();
     }
 

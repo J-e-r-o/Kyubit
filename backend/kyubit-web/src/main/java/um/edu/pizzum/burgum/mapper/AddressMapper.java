@@ -52,7 +52,6 @@ public class AddressMapper {
         );
     }
 
-    // --- Métodos de utilidad para Listas ---
 
     public static List<AddressDto> mapToDtoList(List<Address> entities) {
         return entities.stream()

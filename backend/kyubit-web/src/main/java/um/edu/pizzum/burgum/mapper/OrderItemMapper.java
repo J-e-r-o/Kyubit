@@ -15,7 +15,6 @@ public class OrderItemMapper {
         Long orderId = (entity.getOrder() != null) ? entity.getOrder().getId() : null;
         Long creationId = null;
 
-        // --- LÓGICA DE NOMBRE CORREGIDA ---
         String displayName = "Producto personalizado";
 
         if (entity.getCreation() != null) {
@@ -25,7 +24,7 @@ public class OrderItemMapper {
             String alias = entity.getCreation().getAlias();
             String techName = entity.getCreation().getName();
 
-            // 2. Si tiene alias y no está vacío, úsalo. Si no, usa el nombre técnico.
+            // 2. Si tiene alias y no está vacío, se usa, si no, se usa el nombre tecnico.
             if (alias != null && !alias.trim().isEmpty()) {
                 displayName = alias;
             } else {
@@ -37,7 +36,7 @@ public class OrderItemMapper {
                 .id(entity.getId())
                 .orderId(orderId)
                 .creationId(creationId)
-                .creationName(displayName) // <--- Lo guardamos en el DTO
+                .creationName(displayName)
                 .quantity(entity.getQuantity())
                 .unitPrice(entity.getUnitPrice())
                 .build();

@@ -20,7 +20,6 @@ public class OrderMapper {
                 .map(OrderItemMapper::mapToDto)
                 .collect(Collectors.toList());
 
-        // Calcular TOTAL sumando los items
         BigDecimal total = itemsDto.stream()
                 .map(item -> item.getUnitPrice().multiply(new BigDecimal(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -32,7 +31,7 @@ public class OrderMapper {
                 .createdAt(order.getCreatedAt())
                 .status(order.getStatus())
                 .items(itemsDto)
-                .total(total) // <--- Asignamos total
+                .total(total)
                 .build();
     }
 

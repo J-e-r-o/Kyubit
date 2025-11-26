@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface ExternalService {
     List<OrderDto> getSalesByDate(LocalDate date);
-    // Método para BPS (¡Este es el que te faltaba o debes asegurar!)
+
     Map<String, Object> getEmployeeCount();
     List<CardOwnerDto> getCardOwnerInfo(String cardNumber);
 }

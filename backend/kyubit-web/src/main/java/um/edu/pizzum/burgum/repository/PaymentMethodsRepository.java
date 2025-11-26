@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface PaymentMethodsRepository extends JpaRepository<PaymentMethod, Long> {
     List<PaymentMethod> findByUserId(Long userId);
-    Optional<PaymentMethod> findByIdAndUserId(Long id, Long userId); // opcional: para control de propietario
+    Optional<PaymentMethod> findByIdAndUserId(Long id, Long userId);
     List<PaymentMethod> findByLastFourDigits(String lastFourDigits);
 }

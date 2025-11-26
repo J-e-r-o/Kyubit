@@ -32,7 +32,6 @@ public class UserMapper {
                 ? entity.getCreatedProducts().stream().map(Creation::getId).collect(Collectors.toList())
                 : Collections.emptyList();
 
-        // 4. ELIMINADO: favoriteCreationIds (Ya no existe en la entidad)
 
         return UserDto.builder()
                 .id(entity.getId())
@@ -44,7 +43,6 @@ public class UserMapper {
                 .tokenIds(tokenIds)
                 .addressIds(addressIds)
                 .createdProductIds(createdProductIds)
-                // .favoriteCreationIds(...) -> ELIMINADO
                 .build();
     }
 
