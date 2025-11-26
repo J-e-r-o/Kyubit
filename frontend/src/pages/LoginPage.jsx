@@ -20,15 +20,14 @@ const LoginPage = () => {
       const response = await authService.login({ email, password });
 
       if (response.data) {
-        const userData = response.data; // userData es tu AuthResponse
+        const userData = response.data; 
         console.log('Usuario autenticado:', userData);
 
-        // Llamamos a la función 'login' del contexto global
-        // Esto guardará al usuario en el estado y en localStorage
+        
+        
         login(userData);
 
-        // Redirigir a la página principal
-        navigate('/'); // Redirige a la HomePage (que está en "/")
+        navigate('/');
       } else {
         setError('Usuario o contraseña incorrectos');
       }
