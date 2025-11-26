@@ -1,14 +1,10 @@
 import React from 'react';
-import { useAuth } from '../context/AuthContext'; // Importamos el hook
-import { Navigate, Outlet } from 'react-router-dom'; // Para redirigir
+import { useAuth } from '../context/AuthContext'; 
+import { Navigate, Outlet } from 'react-router-dom'; 
 
-/**
-  para evitar redirecciones prematuras.
- */
 const ProtectedRoute = () => {
     const { isAuthenticated, isLoading } = useAuth();
 
- 
     if (isLoading) {
         return (
             <div className="flex h-screen items-center justify-center bg-gray-100">
@@ -17,15 +13,12 @@ const ProtectedRoute = () => {
         );
     }
 
-   
     if (!isAuthenticated) {
-        
-        return <Navigate to="/login" replace />;
+        // CORRECCIÓN AQUÍ: Cambiamos "/login" por "/softwall"
+        return <Navigate to="/softwall" replace />;
     }
 
-    
     return <Outlet />;
 };
 
 export default ProtectedRoute;
-
