@@ -2,16 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HomePageNav from '../components/HomePageNav';
 import api from '../services/api';
-import { FiUser, FiMapPin, FiCreditCard, FiLogOut, FiTrash2, FiAlertTriangle } from 'react-icons/fi';
+import { FiUser, FiMapPin, FiCreditCard, FiLogOut, FiTrash2, FiAlertTriangle, FiPlus } from 'react-icons/fi';
+import Modal from '../components/Modal';
+import AddressForm from '../components/AddressForm';
+import PaymentForm from '../components/PaymentForm';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
   
-  // 1. Cargar datos desde LocalStorage (Como pidió el profesor)
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem("user");
     return saved ? JSON.parse(saved) : null;
   });
+
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -19,13 +24,49 @@ const ProfilePage = () => {
     }
   }, [user, navigate]);
 
-  // 2. Función para Cerrar Sesión (Logout normal)
+  // LÓGICA AGREGAR DIRECCIÓN 
+  const handleAddAddress = async (newAddressData) => {
+    try {
+        const response = await api.post(`/users/${user.id}/addresses`, newAddressData);
+        const savedAddress = response.data;
+        
+        // Actualizar estado y localStorage
+        const updatedUser = { ...user, addresses: [...(user.addresses || []), savedAddress] };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        setUser(updatedUser);
+        setIsAddressModalOpen(false);
+        alert("Dirección agregada correctamente");
+
+    } catch (error) {
+        console.error("Error guardando dirección", error);
+        alert("Error al guardar la dirección");
+    }
+  };
+
+  //  LÓGICA AGREGAR PAGO 
+  const handleAddPayment = async (newPaymentData) => {
+    try {
+        const response = await api.post(`/users/${user.id}/payments`, newPaymentData);
+        const savedPayment = response.data;
+
+        // Actualizar estado y localStorage
+        const updatedUser = { ...user, payments: [...(user.payments || []), savedPayment] };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        setUser(updatedUser);
+        setIsPaymentModalOpen(false);
+        alert("Método de pago agregado correctamente");
+
+    } catch (error) {
+        console.error("Error guardando pago", error);
+        alert("Error al guardar el método de pago");
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate('/login');
   };
 
-  // 3. Función para DARSE DE BAJA (Soft Delete)
   const handleDeleteAccount = async () => {
     const confirmDelete = window.confirm(
       "¿Estás seguro de que quieres darte de baja? Tu cuenta quedará inactiva y no podrás volver a iniciar sesión."
@@ -34,16 +75,11 @@ const ProfilePage = () => {
     if (!confirmDelete) return;
 
     try {
-      // Llamada al endpoint que creamos en UserController
       await api.delete(`/users/${user.id}`);
-      
       alert("Tu cuenta ha sido desactivada correctamente. Esperamos verte pronto.");
-      
-      // Limpiamos todo y redirigimos
       localStorage.removeItem("user");
-      localStorage.removeItem("cart"); // Limpieza opcional del carrito local si existe
-      window.location.href = "/login"; // Forzamos recarga completa
-
+      localStorage.removeItem("cart");
+      window.location.href = "/login";
     } catch (error) {
       console.error("Error al dar de baja:", error);
       alert("Hubo un error al intentar desactivar la cuenta.");
@@ -70,25 +106,27 @@ const ProfilePage = () => {
               {user.role}
             </span>
           </div>
-          <button 
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-xl hover:bg-gray-50 text-gray-600 transition"
-          >
+          <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-xl hover:bg-gray-50 text-gray-600 transition">
             <FiLogOut /> Cerrar Sesión
           </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
-          {/* SECCIÓN DIRECCIONES (Desde LocalStorage) */}
-          <div className="bg-white rounded-3xl shadow-sm p-8 border border-gray-100">
-            <div className="flex items-center gap-3 mb-6 text-gray-800">
-                <FiMapPin className="text-orange-500 text-xl" />
-                <h2 className="text-xl font-bold">Mis Direcciones</h2>
+          {/* SECCIÓN DIRECCIONES */}
+          <div className="bg-white rounded-3xl shadow-sm p-8 border border-gray-100 flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3 text-gray-800">
+                    <FiMapPin className="text-orange-500 text-xl" />
+                    <h2 className="text-xl font-bold">Mis Direcciones</h2>
+                </div>
+                <button onClick={() => setIsAddressModalOpen(true)} className="text-orange-600 hover:bg-orange-50 p-2 rounded-full transition">
+                    <FiPlus size={24}/>
+                </button>
             </div>
             
             {user.addresses && user.addresses.length > 0 ? (
-              <ul className="space-y-4">
+              <ul className="space-y-4 flex-1">
                 {user.addresses.map((addr) => (
                   <li key={addr.id} className="p-4 bg-gray-50 rounded-xl border border-gray-200">
                     <p className="font-bold text-gray-800">{addr.street} {addr.number}</p>
@@ -98,19 +136,24 @@ const ProfilePage = () => {
                 ))}
               </ul>
             ) : (
-              <p className="text-gray-400 italic">No tienes direcciones guardadas.</p>
+              <div className="text-center py-8 text-gray-400 italic flex-1">No tienes direcciones guardadas.</div>
             )}
           </div>
 
-          {/* SECCIÓN PAGOS (Desde LocalStorage) */}
-          <div className="bg-white rounded-3xl shadow-sm p-8 border border-gray-100">
-            <div className="flex items-center gap-3 mb-6 text-gray-800">
-                <FiCreditCard className="text-orange-500 text-xl" />
-                <h2 className="text-xl font-bold">Mis Tarjetas</h2>
+          {/* SECCIÓN PAGOS */}
+          <div className="bg-white rounded-3xl shadow-sm p-8 border border-gray-100 flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3 text-gray-800">
+                    <FiCreditCard className="text-orange-500 text-xl" />
+                    <h2 className="text-xl font-bold">Mis Tarjetas</h2>
+                </div>
+                <button onClick={() => setIsPaymentModalOpen(true)} className="text-orange-600 hover:bg-orange-50 p-2 rounded-full transition">
+                    <FiPlus size={24}/>
+                </button>
             </div>
 
             {user.payments && user.payments.length > 0 ? (
-              <ul className="space-y-4">
+              <ul className="space-y-4 flex-1">
                 {user.payments.map((pay) => (
                   <li key={pay.id} className="p-4 bg-gray-50 rounded-xl border border-gray-200 flex justify-between items-center">
                     <div>
@@ -124,12 +167,12 @@ const ProfilePage = () => {
                 ))}
               </ul>
             ) : (
-              <p className="text-gray-400 italic">No tienes métodos de pago guardados.</p>
+              <div className="text-center py-8 text-gray-400 italic flex-1">No tienes métodos de pago guardados.</div>
             )}
           </div>
         </div>
 
-        {/* ZONA DE PELIGRO (BAJA LÓGICA) */}
+        {/* ZONA DE DARSE DE BAJA */}
         <div className="mt-12 pt-8 border-t border-gray-200">
             <h3 className="text-lg font-bold text-red-600 mb-4 flex items-center gap-2">
                 <FiAlertTriangle /> Zona de Peligro
@@ -138,8 +181,7 @@ const ProfilePage = () => {
                 <div>
                     <p className="text-red-800 font-semibold">Desactivar mi cuenta</p>
                     <p className="text-red-600 text-sm">
-                        Al desactivar tu cuenta, perderás acceso inmediato y no podrás volver a entrar. 
-                        Tu historial de pedidos se mantendrá por motivos legales.
+                        Al desactivar tu cuenta, perderás acceso inmediato.
                     </p>
                 </div>
                 <button 
@@ -152,6 +194,16 @@ const ProfilePage = () => {
         </div>
 
       </div>
+
+      {/* MODALES */}
+      <Modal isOpen={isAddressModalOpen} onClose={() => setIsAddressModalOpen(false)} title="Agregar dirección">
+        <AddressForm onSave={handleAddAddress} />
+      </Modal>
+
+      <Modal isOpen={isPaymentModalOpen} onClose={() => setIsPaymentModalOpen(false)} title="Agregar Tarjeta">
+        <PaymentForm onSave={handleAddPayment} />
+      </Modal>
+
     </div>
   );
 };
