@@ -19,7 +19,7 @@ public class JwtService {
 
     private final SecretKey secretKey;
     private final long jwtExpiration = 1000 * 60 * 60 * 24;
-    // Usamos inyección por constructor para la clave, es más limpio
+    // Usamos inyección por constructor para la clave, es más limpio creo, o al menos asi queda mas claro cuando se los explqieu
     public JwtService(@Value("${application.security.jwt.secret-key}") String secretKeyValue) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKeyValue);
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
@@ -32,7 +32,6 @@ public class JwtService {
     }
 
     private String getToken(Map<String, Object> extraClaims, UserDetails user) {
-        // --- SINTAXIS MODERNA PARA CONSTRUIR ---
         return Jwts.builder()
                 .claims(extraClaims)
                 .subject(user.getUsername())
@@ -54,7 +53,6 @@ public class JwtService {
     }
 
     private Claims getAllClaims(String token) {
-        // --- SINTAXIS MODERNA PARA PARSEAR ---
         return Jwts.parser() // El método moderno es 'parser'
                 .verifyWith(secretKey) // Se usa 'verifyWith' para establecer la clave
                 .build()

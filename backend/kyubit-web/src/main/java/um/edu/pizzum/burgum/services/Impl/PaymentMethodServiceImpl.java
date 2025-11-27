@@ -33,11 +33,11 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", dto.getUserId()));
 
-        // validaciones básicas (podés extender)
+
         validateDtoFields(dto);
 
         PaymentMethod entity = PaymentMethodMapper.mapToEntity(dto);
-        entity.setUser(user); // reemplaza placeholder por la entidad real
+        entity.setUser(user);
 
         PaymentMethod saved = repo.save(entity);
         return PaymentMethodMapper.mapToDto(saved);
@@ -49,7 +49,6 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
         PaymentMethod existing = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("PaymentMethod", "id", id));
 
-        // Si llega userId, actualizar el user (opcional, revisar permisos)
         if (dto.getUserId() != null && !Objects.equals(existing.getUser().getId(), dto.getUserId())) {
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new ResourceNotFoundException("User", "id", dto.getUserId()));
@@ -96,7 +95,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
         repo.deleteById(id);
     }
 
-    // Validaciones simples (podés mover a util o usar javax.validation en DTOs)
+    // Validaciones simples
     private void validateDtoFields(PaymentMethodDto dto) {
         if (dto.getLastFourDigits() != null && dto.getLastFourDigits().length() != 4) {
             throw new IllegalArgumentException("lastFourDigits must be 4 characters");

@@ -88,11 +88,9 @@ public class CreationServiceImpl implements CreationService {
         Creation existing = creationRepository.findById(id)
                 .orElseThrow(() -> new CreationNotFoundException("Creation", "id", id));
 
-        // campos simples
         if (dto.getName() != null) existing.setName(dto.getName());
         if (dto.getProductType() != null) existing.setProductType(dto.getProductType());
 
-        // user
         if (dto.getUserId() != null) {
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new CreationNotFoundException("User", "id", dto.getUserId()));
@@ -100,7 +98,6 @@ public class CreationServiceImpl implements CreationService {
         }
 
 
-        // ingredients -> reemplazar
         if (dto.getIngredientIds() != null) {
             Set<Ingredient> resolvedIngredients = resolveIngredients(dto.getIngredientIds());
             existing.getIngredients().clear();
@@ -121,9 +118,7 @@ public class CreationServiceImpl implements CreationService {
         creationRepository.deleteById(id);
     }
 
-    /**
-     * Helper: convierte ids -> Set<Ingredient> y valida que existan todos.
-     */
+
     private Set<Ingredient> resolveIngredients(Set<Long> ingredientIds) {
         if (ingredientIds == null || ingredientIds.isEmpty()) return Collections.emptySet();
 

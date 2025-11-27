@@ -14,12 +14,10 @@ public class AddressMapper {
             return null;
         }
 
-        // 1. Crear el placeholder del Usuario
         User userPlaceHolder = (addressDto.getUserId() != null)
                 ? User.builder().id(addressDto.getUserId()).build()
                 : null;
 
-        // 2. Usar el constructor de la Entidad Address
         return new Address(
                 addressDto.getId(),
                 addressDto.getStreet(),
@@ -27,7 +25,7 @@ public class AddressMapper {
                 addressDto.getCity(),
                 addressDto.getZipCode(),
                 addressDto.getNotes(),
-                userPlaceHolder // Asignacion el placeholder
+                userPlaceHolder
         );
     }
 

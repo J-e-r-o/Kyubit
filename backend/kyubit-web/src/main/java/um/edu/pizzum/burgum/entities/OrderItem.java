@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_items")
-@Getter // Usa Getter y Setter en lugar de @Data para tener control
+@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor

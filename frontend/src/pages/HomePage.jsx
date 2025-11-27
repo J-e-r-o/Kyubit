@@ -40,7 +40,7 @@ const HomePage = () => {
             
             <div className="space-y-4">
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-tight text-white">
-                {isAdmin ? "Panel" : "¡Hola"} <span className={gradientTextClass}>{isAdmin ? "Admin" : user?.name}</span>¡
+              {isAdmin ? "Panel" : "¡Hola"} <span className={gradientTextClass}>{isAdmin ? "Admin" : user?.name}</span>
               </h1>
 
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white">

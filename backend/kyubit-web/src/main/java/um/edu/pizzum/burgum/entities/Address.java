@@ -30,7 +30,7 @@ public class Address {
 
     private String zipCode;
 
-    private String notes; // Aclaraciones como "apto 101", "reja negra", etc
+    private String notes; // Aclaraciones tipo "apto 101", "reja negra", etc
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

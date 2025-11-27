@@ -39,7 +39,6 @@ public class AuthController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(@AuthenticationPrincipal User user) {
-        // Spring inyecta automáticamente el usuario autenticado gracias al token JWT
         return ResponseEntity.ok(user);
     }
 

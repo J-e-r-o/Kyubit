@@ -16,9 +16,6 @@ import um.edu.pizzum.burgum.repository.PaymentMethodsRepository;
 import um.edu.pizzum.burgum.repository.UserRepository;
 import um.edu.pizzum.burgum.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import um.edu.pizzum.burgum.dto.CreateUserRequest;
-import um.edu.pizzum.burgum.dto.UserDto;
-import um.edu.pizzum.burgum.mapper.UserMapper;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -44,7 +41,6 @@ public class UserServiceImpl implements UserService {
         address.setNotes(dto.getNotes());     // Agregamos el campo 'notes'
 
         // 3. Vincular al Usuario
-        // NOTA: Asegúrate que en tu entidad Address el campo se llame 'user'
         address.setUser(user);
 
         // 4. Guardar
@@ -72,8 +68,6 @@ public class UserServiceImpl implements UserService {
         pm.setToken(dto.getToken()); // Agregamos el campo 'token' que está en tu DTO
 
         // 3. Vincular al Usuario
-        // NOTA: Asegúrate que en tu entidad PaymentMethod el campo se llame 'client' o 'user'
-        // Basado en tu Order.java, parece que usas 'client' para referirte al User.
         pm.setUser(user);
 
         // 4. Guardar
@@ -118,10 +112,6 @@ public class UserServiceImpl implements UserService {
 
         // Cambiamos el estado a inactivo
         user.setIsActive(false);
-
-        // Opcional: Invalidar tokens actuales
-        // pero con isEnabled() en false Spring Security ya lo bloquea en el próximo login.
-
         userRepository.save(user);
     }
 

@@ -30,7 +30,7 @@ public class ExternalServiceImpl implements ExternalService {
     private final PaymentMethodsRepository paymentMethodRepository;
 
     @Override
-    public List<OrderDto> getSalesByDate(LocalDate date) {
+    public List<OrderDto> getSalesByDate(LocalDate date) { //TODO LO DE DGI
         // Convertimos la fecha "2023-11-24" en un rango:
         // Desde: 2023-11-24 00:00:00
         // Hasta: 2023-11-24 23:59:59.999
@@ -46,8 +46,7 @@ public class ExternalServiceImpl implements ExternalService {
     }
 
     @Override
-    public Map<String, Object> getEmployeeCount() {
-        // Ahora sí coincide: Pasamos un Enum y el Repo espera un Enum.
+    public Map<String, Object> getEmployeeCount() { //TODO LO DE BPS
         long count = userRepository.countByRoleNot(User.Role.ROLE_CLIENTE);
 
         return Map.of(
@@ -71,7 +70,7 @@ public class ExternalServiceImpl implements ExternalService {
 
         // 4. Mapear a DTO con los datos del dueño
         return methods.stream().map(pm -> {
-            User owner = pm.getUser(); // Asumiendo que la relación se llama 'client'
+            User owner = pm.getUser();
             return CardOwnerDto.builder()
                     .cardHolderName(pm.getCardHolderName())
                     .userFullName(owner.getName() + " " + owner.getLastname())

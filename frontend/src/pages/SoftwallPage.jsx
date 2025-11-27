@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import HomePageNav from '../components/HomePageNav';
-import FotoFondo from '../assets/prueba7.png'; // Tu imagen de fondo de pizzas/hamburguesas
+import FotoFondo from '../assets/prueba7.png'; 
 
 const SoftwallPage = () => {
   return (
@@ -22,7 +22,7 @@ const SoftwallPage = () => {
       {/* Contenido Principal */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-[85vh] px-6 text-center">
         
-        {/* Título Principal Impactante */}
+        {/* Título Principal  */}
         <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight leading-tight drop-shadow-lg">
           Empieza a diseñar <br className="md:hidden" /> 
           tu comida <span className="text-orange-500">ahora</span>.

@@ -56,7 +56,6 @@ public class UserMapper {
                 .email(dto.getEmail())
                 .birthdate(dto.getBirthdate())
                 .role(dto.getRole())
-                // Las listas se inicializan vacías por defecto en la entidad gracias a @Builder.Default
                 .build();
     }
 
