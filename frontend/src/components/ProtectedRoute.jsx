@@ -14,7 +14,7 @@ const ProtectedRoute = () => {
     }
 
     if (!isAuthenticated) {
-        // CORRECCIÓN AQUÍ: Cambiamos "/login" por "/softwall"
+        
         return <Navigate to="/softwall" replace />;
     }
 

@@ -121,9 +121,7 @@ public class CreationServiceImpl implements CreationService {
         creationRepository.deleteById(id);
     }
 
-    /**
-     * Helper: convierte ids -> Set<Ingredient> y valida que existan todos.
-     */
+  
     private Set<Ingredient> resolveIngredients(Set<Long> ingredientIds) {
         if (ingredientIds == null || ingredientIds.isEmpty()) return Collections.emptySet();
 

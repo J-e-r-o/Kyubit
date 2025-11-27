@@ -8,7 +8,7 @@ import PaymentForm from '../components/PaymentForm';
 import { FiPlus, FiCheck } from 'react-icons/fi'; 
 
 const RegisterPage = () => {
-  // LÓGICA DEL FORMULARIO 
+   
   const [formData, setFormData] = useState({
     name: '',
     lastname: '',
@@ -69,7 +69,7 @@ const RegisterPage = () => {
     
     try {
       const dataToSubmit = {
-        // Datos del usuario
+        
         name: formData.name,
         lastname: formData.lastname,
         email: formData.email,

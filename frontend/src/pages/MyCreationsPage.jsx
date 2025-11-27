@@ -6,7 +6,7 @@ import { FiShoppingCart, FiTrash2, FiHeart } from 'react-icons/fi';
 
 const MyCreationsPage = () => {
   const [favorites, setFavorites] = useState([]);
-  const [allIngredients, setAllIngredients] = useState([]); // <--- Almacenamos ingredientes para precios
+  const [allIngredients, setAllIngredients] = useState([]); 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   
@@ -18,7 +18,7 @@ const MyCreationsPage = () => {
         return;
     }
 
-    // Carga paralela de Favoritos e Ingredientes (Precios)
+    // Carga paralela de Favoritos e Ingredientes 
     Promise.all([
         api.get(`/creations/favorites?userId=${user.id}`),
         api.get('/ingredients')
@@ -39,7 +39,7 @@ const MyCreationsPage = () => {
           return found ? found.cost : 0;
       };
 
-      // Costo de Toppings (por ID)
+      // Costo de Toppings 
       const toppingsCost = (creation.ingredientIds || []).reduce((sum, id) => {
           const found = allIngredients.find(i => i.id === id);
           return sum + (found ? found.cost : 0);

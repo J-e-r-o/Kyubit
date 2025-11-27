@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import FotoBurger from "../assets/prueba7.png"; // Asegúrate de tener tu imagen aquí
+import FotoBurger from "../assets/prueba7.png"; 
 import HomePageNav from "../components/HomePageNav";
 import api from "../services/api";
 
@@ -87,7 +87,7 @@ const BurgerCreation = () => {
     }
   };
 
-  // --- GUARDAR FAVORITO (NUEVO) ---
+  // --- GUARDAR FAVORITO  ---
   const handleSaveFavorite = async () => {
     if (!user) return navigate("/login");
     if (!isValid) return alert("Completa tu burger primero");
@@ -99,7 +99,7 @@ const BurgerCreation = () => {
       alias: customName,
       productType: "BURGER",
       isFavorite: true,
-      // Campos específicos
+      
       crust: bread,
       meatType: meatType,
       meatCount: meatCount,

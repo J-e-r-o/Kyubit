@@ -34,21 +34,21 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginDto request) {
-        // 1️⃣ Autenticación
+        //  Autenticación
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        // 2️⃣ Buscar usuario
+        // Buscar usuario
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
-        // 3️⃣ Token JWT
+        // Token JWT
         String token = jwtService.getToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, token);
 
-        // 4️⃣ Obtener direcciones
+        // Obtener direcciones
         List<Address> addresses = addressRepository.findByUserId(user.getId());
         List<AddressDto> addressDtos = addresses.stream()
                 .map(a -> AddressDto.builder()
@@ -62,7 +62,7 @@ public class AuthService {
                         .build())
                 .toList();
 
-        // 5️⃣ Obtener métodos de pago
+        // Obtener métodos de pago
         List<PaymentMethod> payments = paymentMethodRepository.findByUserId(user.getId());
         List<PaymentMethodDto> paymentDtos = payments.stream()
                 .map(p -> PaymentMethodDto.builder()
@@ -76,7 +76,7 @@ public class AuthService {
                         .build())
                 .toList();
 
-        // 6️⃣ Construir respuesta completa
+        //  Construir respuesta completa
         return AuthResponse.builder()
                 .token(token)
                 .id(user.getId())
@@ -89,16 +89,14 @@ public class AuthService {
                 .build();
     }
 
-    /**
-     * 🧾 REGISTRO DE CLIENTE (con dirección y método de pago)
-     */
+ 
     @Transactional
     public AuthResponse register(RegisterRequestDTO request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalArgumentException("El email ya se encuentra registrado.");
         }
 
-        // 1️⃣ Crear y guardar usuario
+        // Crear y guardar usuario
         User user = User.builder()
                 .name(request.getName())
                 .lastname(request.getLastname())
@@ -110,7 +108,7 @@ public class AuthService {
 
         User savedUser = userRepository.save(user);
 
-        // 2️⃣ Guardar dirección
+        //  Guardar dirección
         AddressDto addressDto = request.getAddress();
         if (addressDto != null) {
             Address address = Address.builder()
@@ -124,7 +122,7 @@ public class AuthService {
             addressRepository.save(address);
         }
 
-        // 3️⃣ Guardar método de pago
+        // Guardar método de pago
         PaymentMethodDto paymentDto = request.getPayment();
         if (paymentDto != null) {
             PaymentMethod payment = PaymentMethod.builder()
@@ -141,7 +139,7 @@ public class AuthService {
         String token = jwtService.getToken(savedUser);
         saveUserToken(savedUser, token);
 
-// 5️⃣ Obtener direcciones y métodos de pago guardados
+// Obtener direcciones y métodos de pago guardados
         List<Address> addresses = addressRepository.findByUserId(savedUser.getId());
         List<AddressDto> addressDtos = addresses.stream()
                 .map(a -> AddressDto.builder()
@@ -168,7 +166,7 @@ public class AuthService {
                         .build())
                 .toList();
 
-// 6️⃣ Construir respuesta completa
+// Construir respuesta completa
         return AuthResponse.builder()
                 .token(token)
                 .id(savedUser.getId())
@@ -209,7 +207,7 @@ public class AuthService {
                 .build();
     }
 
-    // --- 🔧 MÉTODOS PRIVADOS DE UTILIDAD ---
+    // --- MÉTODOS PRIVADOS DE UTILIDAD ---
 
     private void saveUserToken(User user, String jwtToken) {
         var token = Token.builder()

@@ -8,7 +8,7 @@ const OrderHistoryPage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
-  const userId = user?.id; // Extraemos el ID primitivo
+  const userId = user?.id;
 
   useEffect(() => {
     if (!user) {
@@ -103,13 +103,13 @@ const OrderHistoryPage = () => {
                         {order.items.map((item) => (
                             <li key={item.id} className="py-4 flex justify-between items-center">
                                 <div className="flex items-center gap-4">
-                                    {/* Icono según tipo (puedes mejorarlo luego) */}
+                                    {/* Icono según tipo  */}
                                     <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 font-bold">
                                         {item.quantity}x
                                     </div>
                                     <div>
                                         <p className="font-bold text-gray-800">{item.creationName}</p>
-                                        {/* Aquí podrías mostrar ingredientes si los agregaste al DTO */}
+                                        
                                     </div>
                                 </div>
                                 <span className="text-gray-600 font-medium">${item.unitPrice * item.quantity}</span>

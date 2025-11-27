@@ -10,7 +10,7 @@ import BgDark from "../assets/pizza1.jpg";
 const HomePage = () => {
   const { user } = useAuth();
   
-  // Verificamos si es Admin (Ajusta el string según tu BD: 'ADMIN' o 'ROLE_ADMIN')
+
   const isAdmin = user?.role === "ROLE_ADMIN" || user?.role === "ADMIN";
 
   const gradientTextClass = "bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-red-600";
@@ -79,7 +79,7 @@ const HomePage = () => {
                   </div>
                 </Link>
 
-                {/* Puedes agregar más botones futuros aquí (Reportes, Pedidos, etc) */}
+                {/* Botones */}
                 <div className="col-span-1 sm:col-span-2 text-gray-500 text-sm mt-2">
                     * Panel de acceso exclusivo para personal autorizado.
                 </div>
@@ -87,7 +87,7 @@ const HomePage = () => {
               </div>
 
             ) : (
-              /* VISTA DE CLIENTE (Original) */
+              /* VISTA DE CLIENTE  */
               <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto pt-6">
                 
                 <Link to="/historial" className="group relative p-[2px] rounded-full w-full sm:w-auto">
@@ -123,7 +123,7 @@ const HomePage = () => {
               <div className="absolute w-full h-full rounded-full border-[3px] border-transparent border-r-orange-600/60 rotate-12 animate-pulse"></div>
               <div className="absolute w-[90%] h-[90%] rounded-full border-[2px] border-orange-500/40 border-l-transparent rotate-[-45deg]"></div>
               
-              {/* Imagen (Opcional: Cambiar imagen si es Admin) */}
+              {/* Imagen  */}
               <img
                 src={PizzaImg}
                 alt="Pizza"
