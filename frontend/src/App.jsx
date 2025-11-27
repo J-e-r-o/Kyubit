@@ -28,14 +28,14 @@ function App() {
 
       <Routes>
         
-        {/* --- RUTAS PÚBLICAS --- */}
+        {/* RUTAS PÚBLICAS*/}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         
         {/* Redirección básica si entran a /homepage sin querer */}
         <Route path="/homepage" element={<Navigate to="/" replace />} />
 
-        {/* --- RUTAS PROTEGIDAS (EL "HARD WALL") --- */}
+        {/*RUTAS PROTEGIDAS*/}
         <Route element={<ProtectedRoute />}>
           
           <Route path="/" element={<HomePage />} />

@@ -102,7 +102,7 @@ const CheckoutPage = () => {
     }
   };
 
-  // --- AGREGAR DIRECCIÓN (CORREGIDO) ---
+  // --- AGREGAR DIRECCIÓN ---
   const handleAddAddress = async (newAddressData) => {
     try {
         // 1. Guardar en Backend
@@ -155,7 +155,7 @@ const CheckoutPage = () => {
     }
   };
 
-  // --- CONFIRMAR PEDIDO (Lógica Completa) ---
+  // --- CONFIRMAR PEDIDO ---
   const handlePlaceOrder = async () => {
       if (!selectedAddress) return alert("Selecciona una dirección de envío");
       if (!selectedPayment) return alert("Selecciona un método de pago");
@@ -172,7 +172,7 @@ const CheckoutPage = () => {
               paymentMethodId: selectedPayment
           };
 
-          // Llamada al Backend (Paso 5)
+          // Llamada al Backend 
           await api.post(`/orders/${orderId}/confirm`, payload);
 
           // ÉXITO

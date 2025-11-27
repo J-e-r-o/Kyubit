@@ -20,7 +20,7 @@ const CreationPage = () => {
   const [sauce, setSauce] = useState("");
   const [cheese, setCheese] = useState("");
   const [selectedIngredientIds, setSelectedIngredientIds] = useState([]);
-  const [customName, setCustomName] = useState(""); // Estado para el nombre de favorito
+  const [customName, setCustomName] = useState(""); 
 
   useEffect(() => {
     api.get("/ingredients")

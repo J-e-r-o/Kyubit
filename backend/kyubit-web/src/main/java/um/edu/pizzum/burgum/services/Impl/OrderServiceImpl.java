@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
         Creation creationEntity = creationRepository.findById(savedCreation.getId())
                 .orElseThrow(() -> new RuntimeException("Error al guardar creación"));
 
-        // 3. Buscar o Crear Orden (CART)
+        // 3. Buscar o Crear Orden 
         Order order = orderRepository.findByClient_IdAndStatus(user.getId(), "CART")
                 .orElseGet(() -> {
                     Order newOrder = Order.builder()
@@ -118,18 +118,15 @@ public class OrderServiceImpl implements OrderService {
         PaymentMethod payment = paymentMethodRepository.findById(request.getPaymentMethodId())
                 .orElseThrow(() -> new RuntimeException("Método de pago no encontrado"));
 
-        // 3. PROCESAR PAGO (MOCK) - ¡ESTO FALTABA!
-        // Calculamos total para simular el monto
+        // 3. PROCESAR PAGO 
         double totalAmount = order.getItems().stream()
                 .mapToDouble(i -> i.getUnitPrice().doubleValue() * i.getQuantity())
                 .sum();
 
-        // Llamamos al servicio. Si la tarjeta es '0000' o falla el random,
-        // lanzará Exception y hará Rollback (no se guardará nada abajo).
+
         paymentMockService.processPayment(payment, totalAmount);
 
         // 4. ACTUALIZAR Y GUARDAR
-        // Si llegamos aquí, el pago pasó.
         order.setDeliveryAddress(address);
         order.setPaymentMethod(payment);
         order.setStatus("CONFIRMED");
@@ -145,8 +142,7 @@ public class OrderServiceImpl implements OrderService {
         // 1. Traemos todo lo del usuario ordenado por fecha
         List<Order> allOrders = orderRepository.findAllByClient_IdOrderByCreatedAtDesc(userId);
 
-        // 2. Filtramos: Excluir lo que esté en "CART" (porque eso es el carrito actual, no historial)
-        // y Mapeamos a DTO
+        // 2. Filtramos excluir lo que esté en carty Mapeamos a DTO
         return allOrders.stream()
                 .filter(order -> !"CART".equals(order.getStatus())) // Solo confirmadas
                 .map(OrderMapper::mapToOrderDto)

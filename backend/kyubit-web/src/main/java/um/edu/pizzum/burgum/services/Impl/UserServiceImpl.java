@@ -38,13 +38,12 @@ public class UserServiceImpl implements UserService {
         // 2. Mapear DTO -> Entidad Address
         Address address = new Address();
         address.setStreet(dto.getStreet());
-        address.setNumber(dto.getNumber());   // Integer, coincide con tu DTO
+        address.setNumber(dto.getNumber());   
         address.setCity(dto.getCity());
         address.setZipCode(dto.getZipCode());
-        address.setNotes(dto.getNotes());     // Agregamos el campo 'notes'
+        address.setNotes(dto.getNotes());     
 
         // 3. Vincular al Usuario
-        // NOTA: Asegúrate que en tu entidad Address el campo se llame 'user'
         address.setUser(user);
 
         // 4. Guardar
@@ -52,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
         // 5. Actualizar DTO con el ID generado y devolver
         dto.setId(saved.getId());
-        dto.setUserId(user.getId()); // Seteamos el ID del usuario por consistencia
+        dto.setUserId(user.getId()); 
         return dto;
     }
 
@@ -69,11 +68,9 @@ public class UserServiceImpl implements UserService {
         pm.setCardHolderName(dto.getCardHolderName());
         pm.setLastFourDigits(dto.getLastFourDigits());
         pm.setExpirationDate(dto.getExpirationDate());
-        pm.setToken(dto.getToken()); // Agregamos el campo 'token' que está en tu DTO
+        pm.setToken(dto.getToken()); 
 
         // 3. Vincular al Usuario
-        // NOTA: Asegúrate que en tu entidad PaymentMethod el campo se llame 'client' o 'user'
-        // Basado en tu Order.java, parece que usas 'client' para referirte al User.
         pm.setUser(user);
 
         // 4. Guardar
@@ -101,7 +98,7 @@ public class UserServiceImpl implements UserService {
                 .birthdate(request.getBirthdate())
                 // Encriptamos la contraseña antes de guardar
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(User.Role.ROLE_ADMIN) // Forzamos rol Admin
+                .role(User.Role.ROLE_ADMIN) 
                 .build();
 
         // 3. Guardar
@@ -116,11 +113,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Cambiamos el estado a inactivo
+    
         user.setIsActive(false);
 
-        // Opcional: Invalidar tokens actuales
-        // pero con isEnabled() en false Spring Security ya lo bloquea en el próximo login.
+
 
         userRepository.save(user);
     }

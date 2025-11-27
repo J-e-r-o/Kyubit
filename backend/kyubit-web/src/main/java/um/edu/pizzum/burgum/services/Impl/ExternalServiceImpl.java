@@ -47,7 +47,7 @@ public class ExternalServiceImpl implements ExternalService {
 
     @Override
     public Map<String, Object> getEmployeeCount() {
-        // Ahora sí coincide: Pasamos un Enum y el Repo espera un Enum.
+        
         long count = userRepository.countByRoleNot(User.Role.ROLE_CLIENTE);
 
         return Map.of(
@@ -71,7 +71,7 @@ public class ExternalServiceImpl implements ExternalService {
 
         // 4. Mapear a DTO con los datos del dueño
         return methods.stream().map(pm -> {
-            User owner = pm.getUser(); // Asumiendo que la relación se llama 'client'
+            User owner = pm.getUser(); 
             return CardOwnerDto.builder()
                     .cardHolderName(pm.getCardHolderName())
                     .userFullName(owner.getName() + " " + owner.getLastname())

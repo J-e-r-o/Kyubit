@@ -1,10 +1,8 @@
 import React from 'react';
-import { useAuth } from '../context/AuthContext'; // Importamos el hook
-import { Navigate, Outlet } from 'react-router-dom'; // Para redirigir
+import { useAuth } from '../context/AuthContext'; 
+import { Navigate, Outlet } from 'react-router-dom'; 
 
-/**
-  para evitar redirecciones prematuras.
- */
+
 const ProtectedRoute = () => {
     const { isAuthenticated, isLoading } = useAuth();
 

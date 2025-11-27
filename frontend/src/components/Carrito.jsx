@@ -1,7 +1,7 @@
 import React from 'react';
-import { FiTrash2 } from 'react-icons/fi'; // Asegúrate de tener react-icons instalado
+import { FiTrash2 } from 'react-icons/fi'; 
 
-const Carrito = ({ items, deliveryFee, tax, subtotal, onRemove }) => { // <--- Agregamos onRemove prop
+const Carrito = ({ items, deliveryFee, tax, subtotal, onRemove }) => { 
   
   const total = subtotal + deliveryFee + tax;
 

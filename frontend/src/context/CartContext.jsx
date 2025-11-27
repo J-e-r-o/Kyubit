@@ -16,7 +16,7 @@ export const CartProvider = ({ children }) => {
   }, [cartItems]);
 
   const addToCart = (product) => {
-    // Generamos un ID temporal para el frontend si no viene del backend aún
+
     const newItem = { ...product, tempId: Date.now() };
     setCartItems((prev) => [...prev, newItem]);
   };

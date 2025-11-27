@@ -29,10 +29,10 @@ public class CreationServiceImpl implements CreationService {
     @Override
     @Transactional
     public CreationDto create(CreationDto dto) {
-        // map DTO -> entidad (placeholders)
+        
         Creation creation = CreationMapper.mapToCreation(dto);
 
-        // 1) resolver user
+        
         if (dto.getUserId() == null) {
             throw new CreationNotFoundException("User id is required for creation");
         }
@@ -41,14 +41,14 @@ public class CreationServiceImpl implements CreationService {
         creation.setUser(user);
 
 
-        // 2) resolver ingredientes desde DB
+        
         Set<Ingredient> resolvedIngredients = resolveIngredients(dto.getIngredientIds());
         creation.setIngredients(resolvedIngredients);
 
 
-        // 3) guardar
+        
         Creation saved = creationRepository.save(creation);
-        // 4) volver a leer la entidad con ingredients inicializados
+        
         Creation withIngredients = creationRepository.findByIdWithIngredients(saved.getId())
                 .orElse(saved);
 
@@ -88,11 +88,11 @@ public class CreationServiceImpl implements CreationService {
         Creation existing = creationRepository.findById(id)
                 .orElseThrow(() -> new CreationNotFoundException("Creation", "id", id));
 
-        // campos simples
+        
         if (dto.getName() != null) existing.setName(dto.getName());
         if (dto.getProductType() != null) existing.setProductType(dto.getProductType());
 
-        // user
+       
         if (dto.getUserId() != null) {
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new CreationNotFoundException("User", "id", dto.getUserId()));
@@ -100,7 +100,7 @@ public class CreationServiceImpl implements CreationService {
         }
 
 
-        // ingredients -> reemplazar
+        
         if (dto.getIngredientIds() != null) {
             Set<Ingredient> resolvedIngredients = resolveIngredients(dto.getIngredientIds());
             existing.getIngredients().clear();
@@ -121,9 +121,7 @@ public class CreationServiceImpl implements CreationService {
         creationRepository.deleteById(id);
     }
 
-    /**
-     * Helper: convierte ids -> Set<Ingredient> y valida que existan todos.
-     */
+   
     private Set<Ingredient> resolveIngredients(Set<Long> ingredientIds) {
         if (ingredientIds == null || ingredientIds.isEmpty()) return Collections.emptySet();
 

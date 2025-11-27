@@ -1,35 +1,34 @@
-import React, { useState } from 'react'; // ¡Importamos useState!
-import COVER_IMAGE from '../assets/prueba7.png'; // Asegúrate que la ruta sea correcta
+import React, { useState } from 'react'; 
+import COVER_IMAGE from '../assets/prueba7.png'; 
 import { Link, useNavigate } from 'react-router-dom';
-import authService from '../services/authService'; // ¡Importamos nuestro servicio!
-import Modal from '../components/Modal'; // Importamos el Modal
-import AddressForm from '../components/AddressForm'; // Importamos el Form de Dirección
-import PaymentForm from '../components/PaymentForm'; // Importamos el Form de Pago
-import { FiPlus, FiCheck } from 'react-icons/fi'; // Importamos iconos
+import authService from '../services/authService'; 
+import Modal from '../components/Modal'; 
+import AddressForm from '../components/AddressForm'; 
+import PaymentForm from '../components/PaymentForm';
+import { FiPlus, FiCheck } from 'react-icons/fi'; 
 
 const RegisterPage = () => {
-  // --- LÓGICA DEL FORMULARIO (¡RE-AÑADIDA!) ---
-  // Creamos "estados" para guardar los datos del formulario y los mensajes.
+
   const [formData, setFormData] = useState({
     name: '',
     lastname: '',
     email: '',
     password: '',
-    confirmPassword: '', // Lo usaremos solo en el front
-    birthdate: '', // Asumiendo que quieres este campo
+    confirmPassword: '', 
+    birthdate: '', 
   });
   
-  // --- Nuevo Estado para Modales y sus datos ---
-  const [address, setAddress] = useState(null); // Para guardar la dirección del modal
-  const [payment, setPayment] = useState(null); // Para guardar el pago del modal
+  
+  const [address, setAddress] = useState(null); 
+  const [payment, setPayment] = useState(null); 
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
-  const [error, setError] = useState(''); // Para mensajes de error
-  const [loading, setLoading] = useState(false); // Para deshabilitar el botón
-  const navigate = useNavigate(); // Hook para redirigir al usuario
+  const [error, setError] = useState(''); 
+  const [loading, setLoading] = useState(false); 
+  const navigate = useNavigate(); 
 
-  // --- MANEJADORES ---
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -70,7 +69,7 @@ const RegisterPage = () => {
     
     try {
       const dataToSubmit = {
-        // Datos del usuario
+        
         name: formData.name,
         lastname: formData.lastname,
         email: formData.email,
@@ -102,9 +101,9 @@ const RegisterPage = () => {
     }
   };
 
-  // --- JSX (Renderizado) ---
+ 
   return (
-    <> {/* Usamos un Fragment (<>) para permitir que los Modales estén al mismo nivel */}
+    <> {/* Usamos un Fragment para permitir que los Modales estén al mismo nivel */}
       <div className="w-full h-screen flex flex-col lg:flex-row items-start bg-black">
         
         {/* --- COLUMNA IZQUIERDA (IMAGEN Y TEXTO) --- */}
@@ -201,7 +200,7 @@ const RegisterPage = () => {
                 className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-[#FA8100]"
               />
 
-              {/* --- NUEVOS BOTONES DE MODAL --- */}
+              {/* BOTONES DE MODAL */}
               <div className="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0 pt-2">
                 <button
                   type="button" 

@@ -25,14 +25,14 @@ public class JwtService {
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // --- MÉTODOS PARA CREAR TOKENS ---
+    //MÉTODOS PARA CREAR TOKENS 
 
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(), user);
     }
 
     private String getToken(Map<String, Object> extraClaims, UserDetails user) {
-        // --- SINTAXIS MODERNA PARA CONSTRUIR ---
+        
         return Jwts.builder()
                 .claims(extraClaims)
                 .subject(user.getUsername())
@@ -42,7 +42,7 @@ public class JwtService {
                 .compact();
     }
 
-    // --- MÉTODOS PARA LEER Y VALIDAR TOKENS ---
+    //MÉTODOS PARA LEER Y VALIDAR TOKENS 
 
     public String getUsernameFromToken(String token) {
         return getClaim(token, Claims::getSubject);
@@ -54,12 +54,12 @@ public class JwtService {
     }
 
     private Claims getAllClaims(String token) {
-        // --- SINTAXIS MODERNA PARA PARSEAR ---
-        return Jwts.parser() // El método moderno es 'parser'
-                .verifyWith(secretKey) // Se usa 'verifyWith' para establecer la clave
+        
+        return Jwts.parser() 
+                .verifyWith(secretKey) 
                 .build()
-                .parseSignedClaims(token) // Se usa 'parseSignedClaims'
-                .getPayload(); // Se usa 'getPayload' en lugar de 'getBody'
+                .parseSignedClaims(token) 
+                .getPayload(); 
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

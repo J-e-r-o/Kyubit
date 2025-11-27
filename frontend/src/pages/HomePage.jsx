@@ -1,4 +1,3 @@
-// src/pages/HomePage.jsx
 import React from "react";
 import HomePageNav from "../components/HomePageNav";
 import { useAuth } from "../context/AuthContext";
@@ -16,7 +15,7 @@ const HomePage = () => {
   return (
     <div className="relative min-h-screen w-full bg-black font-sans overflow-x-hidden selection:bg-orange-500 selection:text-white">
 
-      {/* 1. Fondo Oscuro (Imagen) */}
+      {/* 1. Fondo Oscuro */}
       <div
         className="fixed inset-0 bg-cover bg-center opacity-20 z-0 pointer-events-none"
         style={{ backgroundImage: `url(${BgDark})` }}
@@ -85,7 +84,7 @@ const HomePage = () => {
             {/* Contenedor relativo para los círculos */}
             <div className="relative w-[350px] h-[350px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] flex justify-center items-center">
               
-              {/* Círculos Decorativos (Ajustados para no invadir el texto) */}
+              {/* Círculos Decorativos */}
               <div className="absolute w-full h-full rounded-full border-[3px] border-transparent border-r-orange-600/60 rotate-12 animate-pulse"></div>
               <div className="absolute w-[90%] h-[90%] rounded-full border-[2px] border-orange-500/40 border-l-transparent rotate-[-45deg]"></div>
               <div className="absolute w-[80%] h-[80%] rounded-full border-[4px] border-orange-600 border-b-transparent rotate-[30deg]"></div>

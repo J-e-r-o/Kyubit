@@ -48,7 +48,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Transactional(readOnly = true)
     public List<IngredientDto> getIngredientsByType(String typeName) {
         try {
-            // Convertimos el String (ej: "MEAT") al Enum
+            // Convertimos el String al Enum
             Ingredient.IngredientType type = Ingredient.IngredientType.valueOf(typeName.toUpperCase());
             return ingredientRepository.findByType(type).stream()
                     .map(IngredientMapper::mapToIngredientDto)
@@ -80,7 +80,7 @@ public class IngredientServiceImpl implements IngredientService {
 
         if (dto.getCost() != null) existing.setCost(dto.getCost());
         if (dto.getStock() != null) existing.setStock(dto.getStock());
-        if (dto.getType() != null) existing.setType(dto.getType()); // Actualizar tipo
+        if (dto.getType() != null) existing.setType(dto.getType()); 
 
         Ingredient saved = ingredientRepository.save(existing);
         return IngredientMapper.mapToIngredientDto(saved);
