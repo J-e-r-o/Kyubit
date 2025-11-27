@@ -17,7 +17,7 @@ const AdminUsersPage = () => {
     try {
       await api.post('/admin/create-official', formData);
       alert("¡Funcionario creado con éxito!");
-      setFormData({ name: '', lastname: '', email: '', password: '', birthdate: '' }); // Limpiar
+      setFormData({ name: '', lastname: '', email: '', password: '', birthdate: '' }); 
     } catch (error) {
       console.error(error);
       alert("Error al crear funcionario: " + (error.response?.data || "Verifique los datos"));

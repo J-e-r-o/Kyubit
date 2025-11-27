@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import HomePageNav from '../components/HomePageNav'; // O un AdminNav si prefieres
+import HomePageNav from '../components/HomePageNav'; 
 import api from '../services/api';
 import { FiEdit, FiTrash2, FiPlus, FiX } from 'react-icons/fi';
 
@@ -9,7 +9,7 @@ const AdminIngredientsPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  // Estado del formulario
+  
   const [formData, setFormData] = useState({
     id: null,
     name: '',
@@ -18,7 +18,7 @@ const AdminIngredientsPage = () => {
     type: 'OTHER' // Valor por defecto
   });
 
-  // Tipos de ingredientes (Deben coincidir con tu Enum de Java)
+  
   const ingredientTypes = [
     'SIZE', 'PIZZA_BASE', 'BREAD', 'MEAT', 'CHEESE', 'SAUCE', 'VEGETABLE', 'OTHER'
   ];
@@ -55,7 +55,7 @@ const AdminIngredientsPage = () => {
         alert("Ingrediente creado");
       }
       setShowModal(false);
-      fetchIngredients(); // Recargar tabla
+      fetchIngredients(); 
       resetForm();
     } catch (error) {
       console.error(error);

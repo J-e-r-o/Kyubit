@@ -15,13 +15,13 @@ const CheckoutPage = () => {
   // 1. Obtener usuario COMPLETO del localStorage
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")));
 
-  // Estados de la Orden (BD)
+  
   const [cartItems, setCartItems] = useState([]);
   const [orderTotal, setOrderTotal] = useState(0);
   const [orderId, setOrderId] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Estados de UI (Dirección/Pago)
+  
   const [addresses, setAddresses] = useState([]);
   const [payments, setPayments] = useState([]);
   
@@ -102,7 +102,7 @@ const CheckoutPage = () => {
     }
   };
 
-  // --- AGREGAR DIRECCIÓN (CORREGIDO) ---
+  // --- AGREGAR DIRECCIÓN  ---
   const handleAddAddress = async (newAddressData) => {
     try {
         // 1. Guardar en Backend
@@ -155,7 +155,7 @@ const CheckoutPage = () => {
     }
   };
 
-  // --- CONFIRMAR PEDIDO (Lógica Completa) ---
+  // --- CONFIRMAR PEDIDO ---
   const handlePlaceOrder = async () => {
       if (!selectedAddress) return alert("Selecciona una dirección de envío");
       if (!selectedPayment) return alert("Selecciona un método de pago");
@@ -172,10 +172,10 @@ const CheckoutPage = () => {
               paymentMethodId: selectedPayment
           };
 
-          // Llamada al Backend (Paso 5)
+          // Llamada al Backend 
           await api.post(`/orders/${orderId}/confirm`, payload);
 
-          // ÉXITO
+          
           alert("¡Pago Aprobado! Tu pedido ha sido confirmado.");
           navigate('/homepage'); 
           

@@ -25,13 +25,13 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    // 4. Función de Login
+
     const login = (userData) => {
         setUser(userData);
         localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
     };
 
-    // 5. Función de Logout
+    
     const logout = () => {
         setUser(null);
         
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
         navigate('/login');
     };
 
-    // 6. Creamos el valor que compartiremos
+    
     const value = {
         user,
         token: user?.token,

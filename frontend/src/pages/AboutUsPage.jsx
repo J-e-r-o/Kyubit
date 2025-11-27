@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import HomePageNav from '../components/HomePageNav';
 import { FiCheck, FiHeart, FiCpu, FiSmile } from 'react-icons/fi';
-import FotoFondo from '../assets/prueba7.png'; // Reutilizamos tu imagen de fondo
+import FotoFondo from '../assets/prueba7.png'; 
 
 const AboutUsPage = () => {
   return (
@@ -121,7 +121,7 @@ const AboutUsPage = () => {
   );
 };
 
-// Componentes auxiliares para mantener el código limpio
+
 const FeatureItem = ({ text }) => (
     <div className="flex items-center gap-3 text-gray-700">
         <div className="min-w-[20px] h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">

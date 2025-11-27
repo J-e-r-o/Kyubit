@@ -6,7 +6,7 @@ import FotoFondo from '../assets/prueba7.png';
 const SoftwallPage = () => {
   return (
     <div className="min-h-screen bg-gray-900 font-sans relative overflow-hidden text-white">
-      {/* Usamos la Nav para que se vea consistente */}
+      {/* Usamos la Nav de hmoepage */}
       <HomePageNav />
 
       {/* Fondo con superposición oscura */}
